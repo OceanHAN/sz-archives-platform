@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>预约展览 - 深圳市档案馆</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="mobile-container booking-form-page">
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <span class="time">9:41</span>
+            <div class="status-icons">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <header class="page-header">
+            <i class="fas fa-chevron-left back-icon" onclick="window.location.href='booking-landing.html'"></i>
+            <h1>预约展览</h1>
+            <div class="capsule-menu" style="position: static; margin-left: auto;">
+                <i class="fas fa-ellipsis-h"></i>
+                <span class="divider">|</span>
+                <i class="far fa-dot-circle"></i>
+            </div>
+        </header>
+
+        <!-- Calendar Strip -->
+        <div class="calendar-strip">
+            <div class="week-header">
+                <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
+            </div>
+            <div class="days-row">
+                <div class="day-item disabled">
+                    <span class="date-num">5</span>
+                </div>
+                <div class="day-item disabled">
+                    <span class="date-num">6</span>
+                </div>
+                <div class="day-item disabled">
+                    <span class="date-num">7</span>
+                </div>
+                <div class="day-item disabled">
+                    <span class="date-num">8</span>
+                </div>
+                <div class="day-item active">
+                    <span class="date-label">今</span>
+                    <span class="status-text">可预约</span>
+                </div>
+                <div class="day-item">
+                    <span class="date-num">10</span>
+                    <span class="status-text">可预约</span>
+                </div>
+                <div class="day-item disabled">
+                    <span class="date-num">11</span>
+                    <span class="status-text">闭馆</span>
+                </div>
+            </div>
+            <!-- Second Row for demo completeness -->
+            <div class="days-row">
+                <div class="day-item">
+                    <span class="date-num">12</span>
+                    <span class="status-text">可预约</span>
+                </div>
+                <div class="day-item">
+                    <span class="date-num">13</span>
+                    <span class="status-text">可预约</span>
+                </div>
+                <div class="day-item">
+                    <span class="date-num">14</span>
+                    <span class="status-text">可预约</span>
+                </div>
+                <div class="day-item">
+                    <span class="date-num">15</span>
+                    <span class="status-text">可预约</span>
+                </div>
+                <div class="day-item">
+                    <span class="date-num">16</span>
+                    <span class="status-text">可预约</span>
+                </div>
+                <div class="day-item">
+                    <span class="date-num">17</span>
+                    <span class="status-text">可预约</span>
+                </div>
+                <div class="day-item disabled">
+                    <span class="date-num">18</span>
+                    <span class="status-text">闭馆</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="booking-scroll-content">
+            <!-- Select Exhibition -->
+            <div class="section-title">
+                <h3>选择展览</h3>
+                <span class="more-link">展览详情 <i class="fas fa-chevron-right"></i></span>
+            </div>
+            
+            <div class="exhibition-grid">
+                <div class="exhibit-option selected">
+                    <span class="tag">常设展</span>
+                    <h4>城市记忆 时光珍藏</h4>
+                    <p>深圳市档案馆藏珍档陈列</p>
+                </div>
+                <div class="exhibit-option">
+                    <span class="tag">专题展</span>
+                    <h4>党从这里诞生</h4>
+                    <p>深圳市珍贵红色档案联展</p>
+                </div>
+                <div class="exhibit-option">
+                    <span class="tag">专题展</span>
+                    <h4>铭记历史 团结一心</h4>
+                    <p>纪念中国人民抗日战争暨世界反法西斯战争胜利80周年馆藏档案影像展</p>
+                </div>
+                <div class="exhibit-option">
+                    <span class="tag">专题展</span>
+                    <h4>虎穴藏忠魂 曙光迎来早</h4>
+                    <p>深圳市档案馆馆藏吴石、朱枫、陈宝仓档案陈列</p>
+                </div>
+            </div>
+
+            <!-- Select Time -->
+            <div class="section-title">
+                <h3>选择入馆时间段</h3>
+            </div>
+
+            <div class="time-slots">
+                <div class="time-btn selected">
+                    <span class="time-range">09:00-12:00</span>
+                    <span class="status">(可预约)</span>
+                </div>
+                <div class="time-btn">
+                    <span class="time-range">13:00-17:00</span>
+                    <span class="status">(可预约)</span>
+                </div>
+            </div>
+            
+            <div style="height: 100px;"></div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="booking-bottom-bar">
+            <button class="confirm-btn">确认预约</button>
+        </div>
+
+    </div>
+
+    <script>
+        // Simple Interaction Logic
+        const exhibitOptions = document.querySelectorAll('.exhibit-option');
+        exhibitOptions.forEach(opt => {
+            opt.addEventListener('click', () => {
+                exhibitOptions.forEach(o => o.classList.remove('selected'));
+                opt.classList.add('selected');
+            });
+        });
+
+        const timeBtns = document.querySelectorAll('.time-btn');
+        timeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                timeBtns.forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+            });
+        });
+    </script>
+</body>
+</html>

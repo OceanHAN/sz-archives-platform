@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>深圳市档案馆 - 原型</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="mobile-container">
+        <!-- Top Status Bar Mockup -->
+        <div class="status-bar">
+            <span class="time">9:41</span>
+            <div class="status-icons">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- Header / Navigation Bar Mockup -->
+        <div class="nav-bar-top">
+            <div class="capsule-menu">
+                <i class="fas fa-ellipsis-h"></i>
+                <span class="divider">|</span>
+                <i class="far fa-dot-circle"></i>
+            </div>
+        </div>
+
+        <!-- Branding Area -->
+        <header class="branding">
+            <div class="logo-icon">
+                <i class="fas fa-landmark"></i> <!-- Placeholder for the Lotus/Archive logo -->
+            </div>
+            <h1>深圳市档案馆</h1>
+            <p class="subtitle">SHENZHEN MUNICIPAL ARCHIVES</p>
+        </header>
+
+        <!-- Main Content Scroll Area -->
+        <div class="scroll-content">
+            
+            <!-- Primary Action Cards -->
+            <div class="action-cards">
+                <div class="card card-red">
+                    <div class="card-text">
+                        <h3>预约查档</h3>
+                        <p>Archive Access<br>Appointment</p>
+                    </div>
+                    <div class="card-icon">
+                        <i class="fas fa-id-card"></i>
+                    </div>
+                </div>
+                <div class="card card-teal" onclick="window.location.href='booking-landing.html'">
+                    <div class="card-text">
+                        <h3>预约展览</h3>
+                        <p>Exhibition<br>Booking</p>
+                    </div>
+                    <div class="card-icon">
+                        <i class="fas fa-images"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Three Feature Panel -->
+            <div class="feature-panel">
+                <div class="feature-item" onclick="window.location.href='guide.html'">
+                    <div class="icon-box"><i class="fas fa-map-signs"></i></div>
+                    <span class="cn">场馆导览</span>
+                    <span class="en">Venue Guide</span>
+                </div>
+                <div class="feature-item" onclick="window.location.href='search.html'">
+                    <div class="icon-box"><i class="fas fa-search"></i></div>
+                    <span class="cn">档案检索</span>
+                    <span class="en">Archive Search</span>
+                </div>
+                <div class="feature-item">
+                    <div class="icon-box"><i class="fas fa-chalkboard-teacher"></i></div>
+                    <span class="cn">预约课程</span>
+                    <span class="en">Course Registration</span>
+                </div>
+            </div>
+
+            <!-- Promotional Banner -->
+            <div class="promo-banner">
+                <div class="promo-content">
+                    <h2>跟着档案学党史</h2>
+                    <p>档案文献党课</p>
+                    <button class="btn-book">立即预约</button>
+                </div>
+                <!-- Background decoration would go here -->
+            </div>
+
+            <!-- Two Smaller Feature Tiles -->
+            <div class="sub-features">
+                <div class="tile tile-left" onclick="window.location.href='map-view.html'">
+                    <h3>跟着档案观深圳</h3>
+                    <p>数字人文平台</p>
+                    <div class="tile-icon"><i class="fas fa-city"></i></div>
+                </div>
+                <div class="tile tile-right">
+                    <span class="badge">即将上线</span>
+                    <h3>逆时追忆</h3>
+                    <p>城市记忆 时光珍藏</p>
+                    <p class="small">沉浸式档案数字导览</p>
+                </div>
+            </div>
+
+            <!-- Virtual Exhibition Section -->
+            <section class="section-block">
+                <div class="section-header">
+                    <div class="header-left">
+                        <i class="fas fa-wheat section-icon"></i>
+                        <h2>云展厅 <span class="en-title">Virtual Exhibition</span></h2>
+                    </div>
+                    <a href="#" class="more-link">更多 <i class="fas fa-chevron-right"></i></a>
+                </div>
+                
+                <div class="horizontal-scroll">
+                    <!-- Card 1 -->
+                    <div class="exhibition-card">
+                        <div class="card-bg" style="background: linear-gradient(135deg, #e6b980 0%, #eacda3 100%);">
+                            <!-- Placeholder for illustration -->
+                            <div class="card-content">
+                                <h3 class="calligraphy">大道同行 海纳百川</h3>
+                                <p class="desc">从“丝绸之路”的历史回响到“一带一路”的深圳实践</p>
+                                <span class="tag">档案文博展</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Partial Card Mockup -->
+                    <div class="exhibition-card partial">
+                        <div class="card-bg" style="background-color: #A52A2A;"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Online Courses Section -->
+            <section class="section-block">
+                <div class="section-header">
+                    <div class="header-left">
+                        <i class="fas fa-wheat section-icon"></i>
+                        <h2>云课堂 <span class="en-title">Online Courses</span></h2>
+                    </div>
+                    <a href="#" class="more-link">更多 <i class="fas fa-chevron-right"></i></a>
+                </div>
+
+                <div class="course-card">
+                    <div class="course-bg">
+                        <div class="play-btn"><i class="fas fa-play"></i></div>
+                        <h3 class="calligraphy-gold">深圳抗战</h3>
+                        <h3 class="calligraphy-gold sub">血与火的记忆</h3>
+                        <div class="bottom-tag">跟着档案学党史</div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Spacer for bottom nav -->
+            <div style="height: 80px;"></div>
+        </div>
+
+        <!-- Bottom Navigation Bar -->
+        <nav class="bottom-nav">
+            <div class="nav-item active">
+                <i class="fas fa-landmark"></i>
+                <span>首页 Home</span>
+            </div>
+            <div class="nav-item" onclick="window.location.href='news-list.html'">
+                <i class="fas fa-newspaper"></i>
+                <span>资讯 News</span>
+            </div>
+            <div class="nav-item" onclick="window.location.href='profile.html'">
+                <i class="far fa-user"></i>
+                <span>我的 Profile</span>
+            </div>
+        </nav>
+    </div>
+</body>
+</html>

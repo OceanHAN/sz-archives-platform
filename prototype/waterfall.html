@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>瀑布流 - 跟着档案观深圳</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="mobile-container waterfall-page">
+        
+        <!-- Status Bar (Dark text for light bg) -->
+        <div class="status-bar">
+            <span class="time">9:41</span>
+            <div class="status-icons">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- Top Navigation -->
+        <div class="nav-bar-top">
+            <div class="capsule-menu">
+                <i class="fas fa-ellipsis-h"></i>
+                <span class="divider">|</span>
+                <i class="far fa-dot-circle"></i>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <header class="page-header" style="margin-top: 30px;">
+            <h1>档案瀑布流</h1>
+        </header>
+
+        <!-- Waterfall Content -->
+        <div class="waterfall-scroll-content">
+            <div class="waterfall-grid" id="waterfallGrid">
+                <!-- JS will inject images here -->
+            </div>
+            <!-- Bottom spacer for tab bar -->
+            <div style="height: 80px;"></div>
+        </div>
+
+        <!-- Bottom Tab Bar (Immersive Mode - Reused) -->
+        <div class="immersive-tab-bar dark-mode-tab">
+            <div class="tab-item" onclick="window.location.href='map-view.html'">
+                <i class="fas fa-cube"></i>
+                <span>自由模式</span>
+            </div>
+            <div class="tab-item">
+                <i class="fas fa-book-open"></i>
+                <span>故事模式</span>
+            </div>
+            <div class="tab-item">
+                <i class="fas fa-search"></i>
+                <span>搜索</span>
+            </div>
+            <div class="tab-item active">
+                <i class="fas fa-th"></i>
+                <span>瀑布流</span>
+            </div>
+        </div>
+
+        <!-- Lightbox Modal -->
+        <div class="lightbox-modal" id="lightbox">
+            <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
+            <div class="lightbox-content">
+                <img id="lightboxImg" src="" alt="Full view">
+                <div class="lightbox-caption">
+                    <h3 id="lightboxTitle"></h3>
+                    <p id="lightboxDesc"></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Dummy Data for Shenzhen Archives
+        const archives = [
+            { title: "深圳经济特区成立", desc: "1980年8月，深圳经济特区正式成立，开启了改革开放的伟大篇章。", height: 200, color: "#8B4513" },
+            { title: "国贸大厦建设", desc: "1984年，三天一层楼的'深圳速度'。", height: 260, color: "#A0522D" },
+            { title: "深南大道初具规模", desc: "1985年的深南大道，见证了城市的快速扩张。", height: 180, color: "#CD853F" },
+            { title: "蛇口工业区", desc: "时间就是金钱，效率就是生命。", height: 220, color: "#DEB887" },
+            { title: "第一家麦当劳", desc: "1990年，中国内地第一家麦当劳在深圳光华楼开业。", height: 240, color: "#F4A460" },
+            { title: "老东门市场", desc: "记忆中的喧嚣与繁华，老深圳人的购物天堂。", height: 190, color: "#D2691E" },
+            { title: "深圳大学建校", desc: "1983年，深圳大学创办，伴随特区共同成长。", height: 210, color: "#BC8F8F" },
+            { title: "罗湖口岸", desc: "连接深港两地的重要通道，见证无数悲欢离合。", height: 230, color: "#8B0000" },
+            { title: "市民中心启用", desc: "2004年，大鹏展翅的市民中心正式启用。", height: 250, color: "#800000" },
+            { title: "腾讯大厦", desc: "科技创新的缩影，深圳互联网产业的崛起。", height: 200, color: "#A52A2A" }
+        ];
+
+        function renderWaterfall() {
+            const grid = document.getElementById('waterfallGrid');
+            
+            archives.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'waterfall-item';
+                // Using placehold.co for images with random colors/sizes to simulate varied aspect ratios
+                const imgSrc = `https://placehold.co/300x${item.height}/${item.color.replace('#','')}/FFFFFF?text=${encodeURIComponent(item.title)}`;
+                
+                card.innerHTML = `
+                    <div class="waterfall-img-wrapper" style="height: ${item.height}px; background-color: ${item.color}">
+                        <img src="${imgSrc}" alt="${item.title}" loading="lazy">
+                    </div>
+                    <div class="waterfall-info">
+                        <h4>${item.title}</h4>
+                        <p>${item.desc}</p>
+                    </div>
+                `;
+                
+                card.onclick = () => openLightbox(imgSrc, item.title, item.desc);
+                grid.appendChild(card);
+            });
+        }
+
+        function openLightbox(src, title, desc) {
+            const modal = document.getElementById('lightbox');
+            document.getElementById('lightboxImg').src = src;
+            document.getElementById('lightboxTitle').innerText = title;
+            document.getElementById('lightboxDesc').innerText = desc;
+            modal.style.display = 'flex';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+
+        // Init
+        renderWaterfall();
+    </script>
+</body>
+</html>

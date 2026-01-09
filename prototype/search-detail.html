@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>档案详情 - 深圳市档案馆</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="mobile-container detail-page">
+        <!-- Top Status Bar Mockup -->
+        <div class="status-bar">
+            <span class="time">9:41</span>
+            <div class="status-icons">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- Header / Navigation Bar Mockup -->
+        <div class="nav-bar-top">
+            <div class="capsule-menu">
+                <i class="fas fa-ellipsis-h"></i>
+                <span class="divider">|</span>
+                <i class="far fa-dot-circle"></i>
+            </div>
+        </div>
+
+        <!-- Page Header -->
+        <header class="page-header detail-header">
+            <i class="fas fa-chevron-left back-icon" onclick="window.location.href='search-result.html'"></i>
+            <h1>档案详情</h1>
+            <div class="placeholder"></div>
+        </header>
+
+        <!-- Main Content Scroll Area -->
+        <div class="detail-scroll-content">
+            <!-- Archive Title -->
+            <div class="detail-title-section">
+                <h2 id="archiveTitle">深圳市园林处关于淀山湖苗圃、余山植物园土地问题、公园售票开放钓鱼区、修建茶室等报告和中共深圳市委基本建设委员会批复</h2>
+            </div>
+
+            <!-- Metadata Card -->
+            <div class="detail-card metadata-card">
+                <div class="meta-row">
+                    <span class="meta-label">档号</span>
+                    <span class="meta-value">A54-2-1485 <i class="far fa-copy copy-icon"></i></span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">责任者</span>
+                    <span class="meta-value">深圳市园林处</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">形成日期</span>
+                    <span class="meta-value">1982-01-15</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">保管期限</span>
+                    <span class="meta-value">永久</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">密级</span>
+                    <span class="meta-value">公开</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">档案存址</span>
+                    <span class="meta-value">深圳市档案馆</span>
+                </div>
+            </div>
+
+            <!-- PDF Viewer Mockup -->
+            <div class="detail-card pdf-viewer-card">
+                <div class="pdf-header">
+                    <span class="pdf-title">电子全文.pdf</span>
+                    <div class="pdf-controls">
+                        <i class="fas fa-search-minus"></i>
+                        <span class="page-count">1 / 29</span>
+                        <i class="fas fa-search-plus"></i>
+                    </div>
+                </div>
+                <div class="pdf-content-mockup">
+                    <div class="pdf-page-placeholder">
+                        <div class="pdf-watermark">深圳市档案馆</div>
+                        <div class="pdf-text-lines">
+                            <div class="line" style="width: 80%"></div>
+                            <div class="line" style="width: 90%"></div>
+                            <div class="line" style="width: 95%"></div>
+                            <div class="line" style="width: 85%"></div>
+                            <div class="line" style="width: 92%"></div>
+                            <br>
+                            <div class="line" style="width: 88%"></div>
+                            <div class="line" style="width: 96%"></div>
+                            <div class="line" style="width: 75%"></div>
+                            <div class="line" style="width: 90%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pdf-footer-tip">
+                    <i class="fas fa-info-circle"></i> 左右滑动翻页
+                </div>
+            </div>
+            
+            <!-- Bottom Spacer -->
+            <div style="height: 80px;"></div>
+        </div>
+
+        <!-- Bottom Action Bar -->
+        <div class="detail-bottom-bar">
+            <div class="action-btn-group">
+                <div class="icon-action">
+                    <i class="far fa-star"></i>
+                    <span>收藏</span>
+                </div>
+                <div class="icon-action">
+                    <i class="fas fa-share-alt"></i>
+                    <span>分享</span>
+                </div>
+            </div>
+            <button class="apply-btn">申请查阅</button>
+        </div>
+
+    </div>
+
+    <script>
+        // Optional: Simple URL param parsing to show dynamic title if provided
+        // For prototype, we stick to static content or random generation in result page
+        const urlParams = new URLSearchParams(window.location.search);
+        const titleParam = urlParams.get('title');
+        const idParam = urlParams.get('id');
+        
+        if (titleParam) {
+            document.getElementById('archiveTitle').innerHTML = decodeURIComponent(titleParam);
+        }
+    </script>
+</body>
+</html>

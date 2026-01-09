@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>检索结果 - 深圳市档案馆</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="mobile-container search-result-page">
+        <!-- Top Status Bar Mockup -->
+        <div class="status-bar">
+            <span class="time">9:41</span>
+            <div class="status-icons">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- Header / Navigation Bar Mockup -->
+        <div class="nav-bar-top">
+            <div class="capsule-menu">
+                <i class="fas fa-ellipsis-h"></i>
+                <span class="divider">|</span>
+                <i class="far fa-dot-circle"></i>
+            </div>
+        </div>
+
+        <!-- Search Result Header -->
+        <header class="page-header search-header">
+            <i class="fas fa-chevron-left back-icon" onclick="window.location.href='search.html'"></i>
+            <h1>档案检索</h1>
+            <div class="placeholder"></div>
+        </header>
+
+        <!-- Main Search Bar (Active state with value) -->
+        <div class="search-input-container compact">
+            <div class="search-box">
+                <input type="text" value="改革开放" id="mainSearchInput">
+                <span class="clear-btn" onclick="document.getElementById('mainSearchInput').value = ''">清除</span>
+            </div>
+        </div>
+
+        <!-- Result Stats & Secondary Search -->
+        <div class="result-meta-container">
+            <p class="result-count">为您找到相关结果约 <span id="totalCount">0</span> 条</p>
+            
+            <div class="secondary-search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="结果中查询: 请输入第二个查询关键词">
+                <button class="secondary-search-btn">搜索</button>
+            </div>
+        </div>
+
+        <!-- Results List -->
+        <div class="result-list-container" id="resultList">
+            <!-- Results will be injected here via JS -->
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination-container">
+            <button class="page-btn" id="prevBtn" onclick="changePage(-1)" disabled>上一页</button>
+            <span class="page-info"><span id="currentPage">1</span> / <span id="totalPages">1</span></span>
+            <button class="page-btn" id="nextBtn" onclick="changePage(1)">下一页</button>
+        </div>
+
+    </div>
+
+    <script>
+        // Dummy Data Generation
+        const keywords = ["改革开放", "特区建设", "城市规划", "生态环保", "科技创新"];
+        const locations = ["深圳市档案馆", "福田区档案馆", "南山区档案馆", "罗湖区档案馆"];
+        const titles = [
+            "深圳市关于{kw}工作的会议纪要",
+            "关于印发《深圳市{kw}实施方案》的通知",
+            "深圳市{kw}领导小组办公室关于...的报告",
+            "深圳市城市建设与{kw}的历史回顾",
+            "关于{kw}期间相关政策的批复",
+            "深圳市{kw}展览图片集",
+            "相关单位关于{kw}的调研报告"
+        ];
+
+        const totalItems = 299;
+        const itemsPerPage = 5;
+        let currentPage = 1;
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+        function generateDummyData(page, count) {
+            const data = [];
+            for (let i = 0; i < count; i++) {
+                const id = (page - 1) * itemsPerPage + i + 1;
+                const kw = "改革开放"; // Fixed for this demo
+                const titleTemplate = titles[Math.floor(Math.random() * titles.length)];
+                const title = titleTemplate.replace("{kw}", `<span class="highlight">${kw}</span>`);
+                
+                const year = 1980 + Math.floor(Math.random() * 40);
+                const month = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
+                const day = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0');
+                const dateStr = `${year}${month}${day}`;
+                
+                data.push({
+                    id: `SZ-A${String(Math.floor(Math.random() * 100)).padStart(2, '0')}-${String(Math.floor(Math.random() * 10)).padStart(1, '0')}-${String(id).padStart(4, '0')}`,
+                    title: title,
+                    startDate: dateStr,
+                    endDate: String(parseInt(dateStr) + Math.floor(Math.random() * 10000)),
+                    count: Math.floor(Math.random() * 50) + 1,
+                    location: locations[Math.floor(Math.random() * locations.length)]
+                });
+            }
+            return data;
+        }
+
+        function renderResults() {
+            const listContainer = document.getElementById('resultList');
+            listContainer.innerHTML = '';
+            
+            // Generate data for current page
+            // Logic to calculate how many items on this page
+            const remaining = totalItems - (currentPage - 1) * itemsPerPage;
+            const count = remaining > itemsPerPage ? itemsPerPage : remaining;
+            
+            const items = generateDummyData(currentPage, count);
+
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.onclick = () => window.location.href = `search-detail.html?id=${item.id}&title=${encodeURIComponent(item.title)}`;
+                card.className = 'result-card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <span class="archive-code">档号: ${item.id}</span>
+                        <i class="far fa-copy copy-icon"></i>
+                    </div>
+                    <div class="card-title">${item.title}</div>
+                    <div class="card-meta-grid">
+                        <div class="meta-item">起始日期: ${item.startDate}</div>
+                        <div class="meta-item">终止日期: ${item.endDate}</div>
+                        <div class="meta-item">载体数量: ${item.count}</div>
+                        <div class="meta-item">档案存址: ${item.location}</div>
+                    </div>
+                `;
+                listContainer.appendChild(card);
+            });
+
+            // Update UI Stats
+            document.getElementById('totalCount').innerText = totalItems;
+            document.getElementById('currentPage').innerText = currentPage;
+            document.getElementById('totalPages').innerText = totalPages;
+            
+            // Update Buttons
+            document.getElementById('prevBtn').disabled = currentPage === 1;
+            document.getElementById('nextBtn').disabled = currentPage === totalPages;
+            
+            // Scroll to top of list
+            document.querySelector('.result-list-container').scrollTop = 0;
+        }
+
+        function changePage(delta) {
+            const newPage = currentPage + delta;
+            if (newPage >= 1 && newPage <= totalPages) {
+                currentPage = newPage;
+                renderResults();
+            }
+        }
+
+        // Init
+        renderResults();
+
+    </script>
+</body>
+</html>

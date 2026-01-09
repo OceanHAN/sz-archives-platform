@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>场馆导览 - 深圳市档案馆</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .map-marker {
+            display: none; /* Hide all markers by default */
+        }
+        .map-marker.active {
+            display: block; /* Show only active markers */
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-container guide-page">
+        <!-- Top Status Bar Mockup -->
+        <div class="status-bar">
+            <span class="time">9:41</span>
+            <div class="status-icons">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- Header / Navigation Bar Mockup -->
+        <div class="nav-bar-top">
+            <div class="capsule-menu">
+                <i class="fas fa-ellipsis-h"></i>
+                <span class="divider">|</span>
+                <i class="far fa-dot-circle"></i>
+            </div>
+        </div>
+
+        <!-- Guide Header -->
+        <header class="page-header guide-header">
+            <i class="fas fa-chevron-left back-icon" onclick="window.location.href='index.html'"></i>
+            <h1>场馆导览</h1>
+            <div class="placeholder"></div> <!-- Balance for back icon -->
+        </header>
+
+        <!-- Category Tabs -->
+        <div class="guide-tabs-container" id="categoryTabs">
+            <div class="guide-tab" onclick="selectCategory('service', this)">服务台</div>
+            <div class="guide-tab" onclick="selectCategory('toilet', this)">卫生间</div>
+            <div class="guide-tab active" onclick="selectCategory('exhibition', this)">展览</div>
+            <div class="guide-tab" onclick="selectCategory('elevator', this)">电梯</div>
+        </div>
+
+        <!-- More Services Float Button -->
+        <div class="float-btn-more">
+            <i class="fas fa-chevron-down"></i>
+            <span>更多<br>服务</span>
+        </div>
+
+        <!-- Map Area -->
+        <div class="map-container">
+            <!-- Using a placeholder map image that changes -->
+            <img id="floorMapImage" src="https://placehold.co/350x350/F9F5EB/C5A065?text=1F+Exhibition+Map" alt="Floor Map" class="floor-map">
+            
+            <!-- Markers: Exhibition (Default 1F) -->
+            <div class="map-marker marker-exhibition marker-1F active" style="top: 30%; left: 20%;">
+                <span>专题展厅</span>
+            </div>
+            <div class="map-marker marker-exhibition marker-1F active" style="top: 40%; right: 10%;">
+                <span>专题展厅</span>
+            </div>
+            <div class="map-marker marker-exhibition marker-1F active" style="top: 60%; right: 20%;">
+                <span>报告厅</span>
+            </div>
+
+            <!-- Markers: Service Desk -->
+            <div class="map-marker marker-service marker-1F" style="top: 70%; left: 45%; background-color: #C5A065;">
+                <span>总服务台</span>
+            </div>
+            <div class="map-marker marker-service marker-2F" style="top: 50%; left: 50%; background-color: #C5A065;">
+                <span>2F咨询处</span>
+            </div>
+
+            <!-- Markers: Toilet -->
+            <div class="map-marker marker-toilet marker-1F" style="top: 20%; left: 10%; background-color: #2F7B6E;">
+                <span>洗手间</span>
+            </div>
+            <div class="map-marker marker-toilet marker-1F" style="top: 20%; right: 10%; background-color: #2F7B6E;">
+                <span>洗手间</span>
+            </div>
+
+             <!-- Markers: Elevator -->
+            <div class="map-marker marker-elevator marker-1F" style="top: 50%; left: 10%; background-color: #333;">
+                <span>客梯</span>
+            </div>
+        </div>
+
+        <!-- Floor Selector -->
+        <div class="floor-selector" id="floorSelector">
+            <div class="floor-btn" onclick="selectFloor('B1', this)">B1</div>
+            <div class="floor-btn active" onclick="selectFloor('1F', this)">1F</div>
+            <div class="floor-btn" onclick="selectFloor('2F', this)">2F</div>
+            <div class="floor-btn" onclick="selectFloor('3F', this)">3F</div>
+        </div>
+
+    </div>
+
+    <script>
+        // State
+        let currentCategory = 'exhibition';
+        let currentFloor = '1F';
+
+        // Configuration for map images (simulated with placeholder URLs)
+        const mapImages = {
+            'B1': {
+                'service': 'https://placehold.co/350x350/E0E0E0/333?text=B1+Service+Map',
+                'toilet': 'https://placehold.co/350x350/E0E0E0/2F7B6E?text=B1+Toilet+Map',
+                'exhibition': 'https://placehold.co/350x350/E0E0E0/A83226?text=B1+Exhibition+Map',
+                'elevator': 'https://placehold.co/350x350/E0E0E0/000?text=B1+Elevator+Map'
+            },
+            '1F': {
+                'service': 'https://placehold.co/350x350/F9F5EB/C5A065?text=1F+Service+Map',
+                'toilet': 'https://placehold.co/350x350/F9F5EB/2F7B6E?text=1F+Toilet+Map',
+                'exhibition': 'https://placehold.co/350x350/F9F5EB/A83226?text=1F+Exhibition+Map',
+                'elevator': 'https://placehold.co/350x350/F9F5EB/000?text=1F+Elevator+Map'
+            },
+            '2F': {
+                'service': 'https://placehold.co/350x350/FFF8E1/C5A065?text=2F+Service+Map',
+                'toilet': 'https://placehold.co/350x350/FFF8E1/2F7B6E?text=2F+Toilet+Map',
+                'exhibition': 'https://placehold.co/350x350/FFF8E1/A83226?text=2F+Exhibition+Map',
+                'elevator': 'https://placehold.co/350x350/FFF8E1/000?text=2F+Elevator+Map'
+            },
+            '3F': {
+                'service': 'https://placehold.co/350x350/FFF3E0/C5A065?text=3F+Service+Map',
+                'toilet': 'https://placehold.co/350x350/FFF3E0/2F7B6E?text=3F+Toilet+Map',
+                'exhibition': 'https://placehold.co/350x350/FFF3E0/A83226?text=3F+Exhibition+Map',
+                'elevator': 'https://placehold.co/350x350/FFF3E0/000?text=3F+Elevator+Map'
+            }
+        };
+
+        function updateMap() {
+            // Update Image
+            const imgUrl = mapImages[currentFloor][currentCategory];
+            document.getElementById('floorMapImage').src = imgUrl;
+
+            // Update Markers Visibility
+            const markers = document.querySelectorAll('.map-marker');
+            markers.forEach(marker => {
+                marker.classList.remove('active');
+                if (marker.classList.contains(`marker-${currentCategory}`) && marker.classList.contains(`marker-${currentFloor}`)) {
+                    marker.classList.add('active');
+                }
+            });
+        }
+
+        function selectCategory(category, element) {
+            currentCategory = category;
+            
+            // Update Tab Styles
+            const tabs = document.querySelectorAll('.guide-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            element.classList.add('active');
+
+            updateMap();
+        }
+
+        function selectFloor(floor, element) {
+            currentFloor = floor;
+
+            // Update Floor Button Styles
+            const btns = document.querySelectorAll('.floor-btn');
+            btns.forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+
+            updateMap();
+        }
+    </script>
+</body>
+</html>

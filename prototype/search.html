@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>档案检索 - 深圳市档案馆</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="mobile-container search-page">
+        <!-- Top Status Bar Mockup -->
+        <div class="status-bar">
+            <span class="time">9:41</span>
+            <div class="status-icons">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- Header / Navigation Bar Mockup -->
+        <div class="nav-bar-top">
+            <div class="capsule-menu">
+                <i class="fas fa-ellipsis-h"></i>
+                <span class="divider">|</span>
+                <i class="far fa-dot-circle"></i>
+            </div>
+        </div>
+
+        <!-- Search Header -->
+        <header class="page-header search-header">
+            <i class="fas fa-chevron-left back-icon" onclick="window.location.href='index.html'"></i>
+            <h1>档案检索</h1>
+            <div class="placeholder"></div>
+        </header>
+
+        <!-- Search Input -->
+        <div class="search-input-container">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="请输入查询关键词">
+            </div>
+        </div>
+
+        <!-- Archive List -->
+        <div class="archive-list-container">
+            <!-- Main Archive -->
+            <div class="archive-btn active">深圳市档案馆</div>
+
+            <!-- District Archives Grid -->
+            <div class="archive-grid">
+                <div class="archive-btn">福田区档案馆</div>
+                <div class="archive-btn">罗湖区档案馆</div>
+                <div class="archive-btn">南山区档案馆</div>
+                <div class="archive-btn">盐田区档案馆</div>
+                <div class="archive-btn">宝安区档案馆</div>
+                <div class="archive-btn">龙岗区档案馆</div>
+                <div class="archive-btn">龙华区档案馆</div>
+                <div class="archive-btn">坪山区档案馆</div>
+                <div class="archive-btn">光明区档案馆</div>
+                <div class="archive-btn">大鹏新区档案馆</div>
+                <!-- Extras for layout balance if needed -->
+                <div class="archive-btn">全部</div>
+            </div>
+        </div>
+
+        <!-- Bottom Search Button -->
+        <div class="bottom-action-container">
+            <button class="search-action-btn" onclick="window.location.href='search-result.html'">搜索</button>
+        </div>
+
+        <!-- Background Decoration (Lotus Flower) -->
+        <div class="bg-flower-top">
+            <i class="fas fa-spa"></i> <!-- Placeholder for flower graphic -->
+        </div>
+        <div class="bg-flower-bottom">
+            <i class="fas fa-spa"></i>
+        </div>
+
+    </div>
+
+    <script>
+        // Simple selection logic
+        const btns = document.querySelectorAll('.archive-btn');
+        btns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Toggle active state
+                this.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
