@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云展厅详情 - 深圳市档案馆</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="mobile-container exhibition-vr-page">
+        <!-- Background VR Image (Simulated) -->
+        <div class="vr-background">
+            <img src="https://images.unsplash.com/photo-1554907984-15263bfd63bd?q=80&w=1000" alt="VR Scene" id="vrSceneImage">
+            <div class="vr-overlay-gradient"></div>
+        </div>
+
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <span class="time">9:41</span>
+            <div class="status-icons">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- Header Controls -->
+        <header class="vr-header">
+            <i class="fas fa-chevron-left back-icon" onclick="history.back()"></i>
+            <div class="vr-title-truncate">大道同行 海...</div>
+            <div class="capsule-menu light">
+                <i class="fas fa-ellipsis-h"></i>
+                <span class="divider">|</span>
+                <i class="fas fa-bullseye"></i>
+            </div>
+        </header>
+
+        <!-- Big Title Overlay -->
+        <div class="vr-main-title">
+            <h1>大道同行 海纳百川——从<br>“丝绸之路” 的历史回响到<br>“一带一路” 的上海实践档案<br>文物展</h1>
+        </div>
+
+        <!-- Right Floating Tools -->
+        <div class="vr-floating-tools">
+            <div class="vr-tool-btn"><i class="fas fa-expand"></i></div>
+            <div class="vr-tool-btn"><i class="fas fa-vr-cardboard"></i></div>
+            <div class="vr-tool-btn"><i class="far fa-compass"></i></div>
+        </div>
+
+        <!-- Center Navigation Hint -->
+        <div class="vr-center-nav">
+            <div class="nav-arrow-box">
+                <i class="fas fa-chevron-up"></i>
+                <span>前言</span>
+            </div>
+        </div>
+
+        <!-- Bottom Controls -->
+        <div class="vr-bottom-controls">
+            <!-- Info Bar -->
+            <div class="vr-info-bar">
+                <div class="info-left">
+                    <div class="avatar-small">
+                        <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=100" alt="User">
+                    </div>
+                    <span class="info-text">网上展厅，突破时空限制...</span>
+                </div>
+                <div class="info-right">
+                    <i class="far fa-heart"></i>
+                </div>
+            </div>
+
+            <!-- Scene Carousel -->
+            <div class="vr-scene-carousel">
+                <div class="scene-item">
+                    <div class="scene-thumb">
+                        <img src="https://images.unsplash.com/photo-1554907984-15263bfd63bd?q=80&w=200" alt="Scene">
+                    </div>
+                    <span class="scene-label">场馆</span>
+                </div>
+                <div class="scene-item">
+                    <div class="scene-thumb">
+                        <img src="https://images.unsplash.com/photo-1518998053901-5348d3969105?q=80&w=200" alt="Scene">
+                    </div>
+                    <span class="scene-label">第一单元会通...</span>
+                </div>
+                <div class="scene-item active">
+                    <div class="scene-thumb">
+                        <img src="https://images.unsplash.com/photo-1554907984-15263bfd63bd?q=80&w=200" alt="Scene">
+                        <div class="active-border"></div>
+                    </div>
+                    <span class="scene-label">入口</span>
+                </div>
+                <div class="scene-item">
+                    <div class="scene-thumb">
+                        <img src="https://images.unsplash.com/photo-1507643179173-617d6c13613e?q=80&w=200" alt="Scene">
+                    </div>
+                    <span class="scene-label">第二单元和合...</span>
+                </div>
+                <div class="scene-item">
+                    <div class="scene-thumb">
+                        <img src="https://images.unsplash.com/photo-1565553642973-6af7d2a98071?q=80&w=200" alt="Scene">
+                    </div>
+                    <span class="scene-label">第三单元风气...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>预约课程 - 深圳市档案馆</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="mobile-container course-booking-page">
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <span class="time">9:41</span>
+            <div class="status-icons">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <header class="page-header" style="position: relative; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-chevron-left back-icon" onclick="history.back()" style="position: absolute; left: 20px; font-size: 20px; color: #333; cursor: pointer;"></i>
+            <h1>预约课程</h1>
+            <div class="nav-bar-top" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+                <div class="capsule-menu light" style="border-color: #ccc; background: rgba(255,255,255,0.8);">
+                    <i class="fas fa-ellipsis-h" style="color: #333;"></i>
+                    <span class="divider">|</span>
+                    <i class="fas fa-bullseye" style="color: #333;"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Tabs -->
+        <div class="course-tabs">
+            <div class="course-tab-item active" onclick="switchTab('party', this)">预约党课</div>
+            <div class="course-tab-item" onclick="switchTab('ideology', this)">预约思政课</div>
+            <div class="course-tab-item" onclick="switchTab('activity', this)">活动招募</div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="course-list">
+            
+            <!-- Tab 1: Party Courses -->
+            <div id="tab-party" class="tab-content active">
+                <!-- Card 1 -->
+                <div class="booking-course-card card-1" onclick="window.location.href='course-detail.html'">
+                    <div class="deliver-tag">可送课上门</div>
+                    <div class="course-overlay-text">
+                        <h3>铭记历史 团结一心</h3>
+                        <p>——纪念中国人民抗日战争暨世界反法西斯战争胜利80周年</p>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="booking-course-card card-2" onclick="window.location.href='course-detail.html'">
+                    <div class="deliver-tag">可送课上门</div>
+                    <div class="course-overlay-text">
+                        <h3>作风建设 永远在路上</h3>
+                        <p>深入贯彻中央八项规定精神学习教育专题党课</p>
+                        <div style="margin-top: 10px; font-size: 10px; display: flex; align-items: center; justify-content: center; gap: 5px;">
+                            <i class="fas fa-book-open" style="color: #FFD700;"></i>
+                            <span>“跟着档案学党史” 档案文献党课</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="booking-course-card card-3" onclick="window.location.href='course-detail.html'">
+                    <div class="deliver-tag">可送课上门</div>
+                    <div class="course-overlay-text">
+                        <div style="background: #A83226; padding: 2px 10px; display: inline-block; font-size: 10px; margin-bottom: 5px; border-radius: 2px;">中国共产党第二十届中央委员会第三次全体会议</div>
+                        <h3>“三中全会”看改革</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Ideology Courses -->
+            <div id="tab-ideology" class="tab-content">
+                <div class="booking-course-card" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?q=80&w=600'); background-size: cover; background-position: center;" onclick="window.location.href='course-detail.html'">
+                    <div class="deliver-tag">可送课上门</div>
+                    <div class="course-overlay-text">
+                        <h3>传承红色基因</h3>
+                        <p>青少年思政教育专题课程</p>
+                    </div>
+                </div>
+                <div class="booking-course-card" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1524178232363-1fb2b075b955?q=80&w=600'); background-size: cover; background-position: center;" onclick="window.location.href='course-detail.html'">
+                    <div class="course-overlay-text">
+                        <h3>新时代 新思想</h3>
+                        <p>大中小学思政一体化建设实践</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Activity Recruitment -->
+            <div id="tab-activity" class="tab-content">
+                <div class="booking-course-card" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=600'); background-size: cover; background-position: center;" onclick="window.location.href='course-detail.html'">
+                    <div class="course-overlay-text">
+                        <h3>“兰台小工匠”招募</h3>
+                        <p>暑期档案修复体验活动</p>
+                        <div style="margin-top: 10px; background: #27AE60; padding: 2px 8px; border-radius: 4px; font-size: 10px; display: inline-block;">报名进行中</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName, element) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.course-tab-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            // Add active class to clicked tab
+            element.classList.add('active');
+
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            // Show selected tab content
+            document.getElementById('tab-' + tabName).classList.add('active');
+        }
+    </script>
+</body>
+</html>

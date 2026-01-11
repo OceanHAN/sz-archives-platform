@@ -144,6 +144,21 @@
 
     </div>
 
+    <!-- Custom Auth Modal -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-id-card"></i>
+            </div>
+            <div class="modal-title">实名认证提示</div>
+            <div class="modal-message">为了确保您的预约权益，请先完成实名认证。</div>
+            <div class="modal-actions">
+                <button class="modal-btn cancel">取消</button>
+                <button class="modal-btn confirm">去认证</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Simple Interaction Logic
         const exhibitOptions = document.querySelectorAll('.exhibit-option');
@@ -160,6 +175,37 @@
                 timeBtns.forEach(b => b.classList.remove('selected'));
                 btn.classList.add('selected');
             });
+        });
+
+        // Form submission handling
+        const confirmBtn = document.querySelector('.confirm-btn');
+        const modal = document.getElementById('authModal');
+        const cancelBtn = document.querySelector('.modal-btn.cancel');
+        const authBtn = document.querySelector('.modal-btn.confirm');
+
+        confirmBtn.addEventListener('click', () => {
+            // Show custom modal
+            modal.style.display = 'flex';
+        });
+
+        // Close modal functions
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        cancelBtn.addEventListener('click', closeModal);
+        
+        authBtn.addEventListener('click', () => {
+            closeModal();
+            // In a real app, this would redirect to auth page
+            console.log('Redirecting to authentication...');
+        });
+
+        // Close on click outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
         });
     </script>
 </body>

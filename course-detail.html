@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>课程详情 - 深圳市档案馆</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="mobile-container course-detail-page">
+        <!-- Status Bar -->
+        <div class="status-bar white-text">
+            <span class="time">9:41</span>
+            <div class="status-icons">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- Header (Overlay) -->
+        <header class="detail-header-overlay">
+            <i class="fas fa-chevron-left back-icon" onclick="history.back()"></i>
+            <div class="header-actions">
+                <div class="capsule-menu light">
+                    <i class="fas fa-ellipsis-h"></i>
+                    <span class="divider">|</span>
+                    <i class="fas fa-bullseye"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Banner Image -->
+        <div class="detail-banner">
+            <img src="https://images.unsplash.com/photo-1533073526757-2c8ca1df9f1c?q=80&w=800" alt="Course Banner">
+        </div>
+
+        <!-- Main Content -->
+        <div class="detail-content-scroll">
+            <div class="detail-header-info">
+                <h1 class="course-title">铭记历史 团结一心——纪念中国人民抗日战争暨世界反法西斯战争胜利80周年</h1>
+                <div class="course-meta">
+                    <p>党课时长：45分</p>
+                    <p>2025-11-20 00:00 - 2026-12-31 23:00</p>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <h2 class="section-heading">党课介绍</h2>
+                <p class="section-text">
+                    2025年是中国人民抗日战争暨世界反法西斯战争胜利80周年。《铭记历史 团结一心——纪念中国人民抗日战争暨世界反法西斯战争胜利80周年》档案影像党课以上海市档案馆馆藏珍档、上海音像资料馆馆藏珍贵影像为素材，在讲述中结合多媒体手段，回顾了中国人民抗日战争的伟大历程，展现了中国共产党在抗日战争中的中流砥柱作用。
+                </p>
+                <p class="section-text">
+                    课程深入挖掘档案背后的故事，通过珍贵的历史画面和生动的讲述，让听众深刻感受到那段峥嵘岁月里，中华儿女不屈不挠、浴血奋战的英雄气概，激励新时代党员干部铭记历史、缅怀先烈、珍爱和平、开创未来，为实现中华民族伟大复兴的中国梦而不懈奋斗。
+                </p>
+            </div>
+            
+            <!-- Padding for bottom bar -->
+            <div style="height: 100px;"></div>
+        </div>
+
+        <!-- Bottom Action Bar -->
+        <div class="bottom-booking-bar">
+            <button class="booking-btn-large" id="showBookingModal">立即预约</button>
+        </div>
+    </div>
+
+    <!-- Custom Info Modal -->
+    <div class="modal-overlay" id="bookingModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="modal-title">温馨提示</div>
+            <div class="modal-message">线上暂未开通，请联系oceansHan</div>
+            <div class="modal-actions">
+                <button class="modal-btn confirm" onclick="closeModal()">知道了</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('bookingModal');
+        const btn = document.getElementById('showBookingModal');
+        
+        btn.onclick = function() {
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+        
+        // Close on click outside
+        modal.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>

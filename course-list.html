@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云课堂 - 深圳市档案馆</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="mobile-container course-list-page" style="background-color: var(--bg-beige);">
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <span class="time">9:41</span>
+            <div class="status-icons">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <header class="page-header" style="position: relative; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-chevron-left back-icon" onclick="history.back()" style="position: absolute; left: 20px; font-size: 20px; color: #333; cursor: pointer;"></i>
+            <h1>云课堂</h1>
+            <div class="nav-bar-top" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+                <div class="capsule-menu light" style="border-color: #ccc; background: rgba(255,255,255,0.8);">
+                    <i class="fas fa-ellipsis-h" style="color: #333;"></i>
+                    <span class="divider">|</span>
+                    <i class="fas fa-bullseye" style="color: #333;"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="course-video-list" style="padding: 15px; display: flex; flex-direction: column; gap: 20px;">
+            
+            <!-- Video Card 1 -->
+            <div class="video-card" style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+                <div class="video-cover" style="position: relative; height: 200px;">
+                    <img src="https://images.unsplash.com/photo-1533073526757-2c8ca1df9f1c?q=80&w=600" style="width: 100%; height: 100%; object-fit: cover;" alt="Course 1">
+                    <div class="play-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center;">
+                        <div class="play-btn-big" style="width: 50px; height: 50px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #A83226; font-size: 20px; padding-left: 4px;">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-tag" style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); background: #D4AF37; color: white; padding: 2px 10px; border-radius: 4px; font-size: 10px;">跟着档案学党史</div>
+                </div>
+                <div class="video-info" style="padding: 15px;">
+                    <h3 style="font-size: 16px; font-weight: bold; color: #333; line-height: 1.4; margin-bottom: 5px;">“跟着档案学党史”档案思政课——《上海抗战 血与火的记忆》</h3>
+                </div>
+            </div>
+
+            <!-- Video Card 2 -->
+            <div class="video-card" style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+                <div class="video-cover" style="position: relative; height: 200px;">
+                    <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=600" style="width: 100%; height: 100%; object-fit: cover;" alt="Course 2">
+                    <div class="play-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center;">
+                        <div class="play-btn-big" style="width: 50px; height: 50px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #A83226; font-size: 20px; padding-left: 4px;">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-tag" style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); background: #5D4037; color: white; padding: 2px 10px; border-radius: 4px; font-size: 10px;">跟着档案学党史</div>
+                </div>
+                <div class="video-info" style="padding: 15px;">
+                    <h3 style="font-size: 16px; font-weight: bold; color: #333; line-height: 1.4; margin-bottom: 5px;">“跟着档案学党史”档案思政课——《水印·城记——苏河与申城的文明交响》</h3>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

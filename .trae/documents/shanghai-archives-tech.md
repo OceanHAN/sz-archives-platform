@@ -31,6 +31,7 @@ graph TD
 |---------|------|
 | /pages/index/index | 首页，展示核心功能入口和推广内容 |
 | /pages/exhibition/exhibition | 云展厅页面，展示虚拟展览列表 |
+| /pages/exhibition/list | 云展厅列表页，展示更多虚拟展览 |
 | /pages/course/course | 云课堂页面，展示在线课程列表 |
 | /pages/news/news | 资讯页面，展示新闻资讯列表 |
 | /pages/profile/profile | 个人中心，用户信息和记录管理 |
@@ -127,6 +128,20 @@ erDiagram
   viewCount: number,    // 观看次数
   createTime: Date      // 创建时间
 }
+
+预约课程表 (bookableCourses)
+```javascript
+{
+  _id: string,           // 主键ID
+  title: string,         // 课程标题
+  category: string,      // 分类：party(党课)/ideology(思政课)/activity(活动)
+  coverImage: string,    // 封面图片URL
+  tags: array,           // 标签 ["可送课上门"]
+  description: string,   // 描述
+  isDeliverable: boolean,// 是否可送课上门
+  status: string,        // 状态：active/inactive
+  createTime: Date       // 创建时间
+}
 ```
 
 用户表 (users)
@@ -171,3 +186,15 @@ erDiagram
   updateTime: Date     // 更新时间
 }
 ```
+
+## 5.不仅限于当前功能的扩展规划
+
+### 5.1 VR全景展厅技术方案 (未来规划)
+- **核心需求**：实现类似Google Street View的步进式全景漫游。
+- **技术选型**：
+  - **渲染引擎**：Three.js 或 Krpano (Web端), 微信小程序原生WebGL。
+  - **数据结构**：全景图切片 (Cube Map 或 Equirectangular), 热点坐标 (Hotspots) 数据, 场景连接图 (Scene Graph)。
+  - **交互逻辑**：
+    - 触摸滑动控制视角旋转 (Camera Rotation)。
+    - 点击地面箭头/热点触发场景切换 (Scene Transition)。
+    - 陀螺仪支持 (可选) 增强沉浸感。
