@@ -1,30 +1,17 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import { RouterView } from 'vue-router'
+// 根组件：主要负责渲染路由视图
+// Root component: Responsible for rendering the router view
+console.log('App.vue setup');
 </script>
 
 <template>
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+  <!-- 路由出口，根据当前 URL 渲染对应的页面组件 -->
+  <!-- Router Outlet: Renders the component matching the current URL -->
+  <router-view />
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
+<style>
+/* 全局样式已在 main.ts 中引入 assets/styles.css，此处可放置 App 级特有样式 */
+/* Global styles are imported in main.ts via assets/styles.css */
 </style>
