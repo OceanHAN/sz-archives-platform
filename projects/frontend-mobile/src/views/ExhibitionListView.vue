@@ -4,7 +4,7 @@
       title="展览列表"
       left-text="返回"
       left-arrow
-      @click-left="$router.back()"
+      @click-left="onClickLeft"
       :border="false"
       class="static-header"
     />
@@ -62,6 +62,14 @@ import { getExhibitions, type ExhibitionItem } from '../api/exhibition';
 const active = ref(0);
 const router = useRouter();
 const exhibitions = ref<ExhibitionItem[]>([]);
+
+const onClickLeft = () => {
+  if (window.history.length > 1) {
+    router.back();
+  } else {
+    router.push('/');
+  }
+};
 
 const fetchExhibitions = async () => {
   try {

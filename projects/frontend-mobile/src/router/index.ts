@@ -9,6 +9,11 @@ const router = createRouter({
       component: () => import('../views/HomeView.vue')
     },
     {
+      path: '/booking-landing',
+      name: 'booking-landing',
+      component: () => import('../views/BookingLandingView.vue')
+    },
+    {
       path: '/booking',
       name: 'booking',
       component: () => import('../views/BookingView.vue')
@@ -39,9 +44,19 @@ const router = createRouter({
       component: () => import('../views/NewsView.vue')
     },
     {
+      path: '/news-detail/:id',
+      name: 'news-detail',
+      component: () => import('../views/NewsDetailView.vue')
+    },
+    {
       path: '/exhibition-list',
       name: 'exhibition-list',
       component: () => import('../views/ExhibitionListView.vue')
+    },
+    {
+      path: '/course-list',
+      name: 'course-list',
+      component: () => import('../views/CourseListView.vue')
     },
     {
       path: '/exhibition-detail/:id',
@@ -62,6 +77,11 @@ const router = createRouter({
       path: '/my-appointments',
       name: 'my-appointments',
       component: () => import('../views/MyAppointmentsView.vue')
+    },
+    {
+      path: '/course-player/:id',
+      name: 'course-player',
+      component: () => import('../views/CoursePlayerView.vue')
     },
     {
       path: '/:pathMatch(.*)*',

@@ -1,330 +1,474 @@
 <template>
-  <div class="booking-page mobile-container">
-    <!-- 顶部导航栏 (Static in Flex) -->
-    <van-nav-bar
-      :title="pageTitle"
-      left-text="返回"
-      left-arrow
-      @click-left="onClickLeft"
-      class="static-nav"
-    />
+  <div class="booking-view">
+    <!-- Header -->
+    <div class="header">
+      <div class="back-btn" @click="$router.back()">
+        <van-icon name="arrow-left" />
+      </div>
+      <div class="title">{{ pageTitle }}</div>
+    </div>
 
-    <!-- 表单区域 (Scrollable in Flex) -->
-    <div class="booking-scroll-content">
-      <van-notice-bar
-        left-icon="info-o"
-        :text="noticeText"
-        background="#ecf9ff"
-        color="#1989fa"
-      />
+    <!-- Scrollable Content -->
+    <div class="scroll-content">
+      <!-- Date Selector (Calendar Strip) -->
+      <div class="section-title">选择日期</div>
+      <div class="date-strip">
+        <div 
+          v-for="date in dateList" 
+          :key="date.full"
+          class="date-item"
+          :class="{ active: selectedDate === date.full, disabled: !date.available }"
+          @click="date.available && (selectedDate = date.full)"
+        >
+          <div class="weekday">{{ date.weekday }}</div>
+          <div class="day">{{ date.day }}</div>
+        </div>
+      </div>
 
-      <van-form @submit="onSubmit">
-        <van-cell-group inset title="基本信息">
-          <!-- 预约类型展示 -->
-          <van-field
-            :model-value="bookingTypeLabel"
-            label="业务类型"
-            readonly
-          />
-          
-          <!-- 日期选择 -->
-          <van-field
-            v-model="formState.booking_date"
-            is-link
-            readonly
-            name="booking_date"
-            label="预约日期"
-            placeholder="点击选择日期"
-            :rules="[{ required: true, message: '请选择预约日期' }]"
-            @click="showCalendar = true"
-          />
-          <van-calendar
-            v-model:show="showCalendar"
-            @confirm="onConfirmDate"
-            color="#1989fa"
-            :min-date="minDate"
-            :max-date="maxDate"
-          />
+      <!-- Venue/Exhibition Selection -->
+      <div class="section-title">选择展览/展馆</div>
+      <div class="venue-grid">
+        <div 
+          v-for="venue in venues" 
+          :key="venue.id"
+          class="venue-card"
+          :class="{ active: selectedVenueId === venue.id }"
+          @click="selectedVenueId = venue.id"
+        >
+          <div class="venue-image" :style="{ backgroundImage: `url(${venue.cover_image})` }">
+            <div class="active-overlay" v-if="selectedVenueId === venue.id">
+              <van-icon name="success" />
+            </div>
+          </div>
+          <div class="venue-name">{{ venue.name }}</div>
+          <div class="venue-status">余位: {{ venue.capacity }}</div>
+        </div>
+      </div>
 
-          <!-- 时间段选择 -->
-          <van-field
-            v-model="formState.time_slot"
-            is-link
-            readonly
-            name="time_slot"
-            label="时间段"
-            placeholder="点击选择时间段"
-            :rules="[{ required: true, message: '请选择时间段' }]"
-            @click="showTimePicker = true"
-          />
-          <van-popup v-model:show="showTimePicker" position="bottom" round>
-            <van-picker
-              title="选择时间段"
-              :columns="timeSlotColumns"
-              @confirm="onConfirmTime"
-              @cancel="showTimePicker = false"
+      <!-- Time Slot Selection -->
+      <div class="section-title">选择时间</div>
+      <div class="time-grid">
+        <div 
+          v-for="slot in timeSlots" 
+          :key="slot.value"
+          class="time-item"
+          :class="{ active: selectedTime === slot.value }"
+          @click="selectedTime = slot.value"
+        >
+          {{ slot.label }}
+        </div>
+      </div>
+
+      <!-- Visitor Count -->
+      <div class="section-title">参观人数</div>
+      <div class="visitor-count-box">
+        <van-field name="visitor_count" label="人数">
+          <template #input>
+            <van-stepper 
+              v-model="visitorCount" 
+              :min="isGroup ? 6 : 1" 
+              :max="isGroup ? 50 : 5" 
+              integer 
+              button-size="32px"
+              input-width="50px"
             />
-          </van-popup>
+          </template>
+        </van-field>
+      </div>
 
-          <!-- 参观人数 (仅团队或普通展览预约显示) -->
-          <van-field
-            v-if="showVisitorCount"
-            name="visitor_count"
-            label="参观人数"
-            :rules="[{ required: true, message: '请输入参观人数' }]"
-          >
-            <template #input>
-              <van-stepper v-model="formState.visitor_count" min="1" :max="maxVisitors" integer theme="round" button-size="22" />
-            </template>
-          </van-field>
-        </van-cell-group>
+      <div style="height: 100px;"></div>
+    </div>
 
-        <!-- 查档专用字段 -->
-        <van-cell-group inset title="查档信息" v-if="isArchiveBooking">
-          <van-field
-            v-model="formState.id_card"
-            name="id_card"
-            label="身份证号"
-            placeholder="请输入本人身份证号"
-            :rules="[
-              { required: true, message: '请填写身份证号' },
-              { pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: '身份证格式不正确' }
-            ]"
-          />
-          <van-field
-            v-model="formState.purpose"
-            name="purpose"
-            label="查档目的"
-            placeholder="简述查档目的（如：编史修志、工作考察等）"
-            type="textarea"
-            rows="2"
-            autosize
-            maxlength="100"
-            show-word-limit
-            :rules="[{ required: true, message: '请填写查档目的' }]"
-          />
-        </van-cell-group>
+    <!-- Footer Action -->
+    <div class="footer-action">
+      <div class="summary">
+        <div class="date-time">{{ selectedDate }} {{ selectedTime }}</div>
+        <div class="count">{{ visitorCount }} 人</div>
+      </div>
+      <van-button 
+        type="primary" 
+        round 
+        class="confirm-btn" 
+        @click="showAuthModal = true"
+        :disabled="!isFormValid"
+      >
+        确定预约
+      </van-button>
+    </div>
 
-        <!-- 联系人信息 -->
-        <van-cell-group inset title="联系方式">
+    <!-- Auth/Login Modal -->
+    <van-popup v-model:show="showAuthModal" round position="bottom" class="auth-popup">
+      <div class="auth-content">
+        <div class="auth-header">
+          <h3>登录后继续预约</h3>
+          <p>为了保障预约权益，请先登录系统</p>
+        </div>
+        <div class="auth-body">
           <van-field
-            v-model="formState.contact_name"
-            name="contact_name"
-            label="联系人"
-            placeholder="请输入真实姓名"
-            :rules="[{ required: true, message: '请填写联系人姓名' }]"
-          />
-
-          <van-field
-            v-model="formState.contact_phone"
-            name="contact_phone"
+            v-model="phone"
             type="tel"
             label="手机号"
             placeholder="请输入手机号"
-            :rules="[
-              { required: true, message: '请填写手机号' },
-              { pattern: /^1[3-9]\d{9}$/, message: '手机号格式不正确' }
-            ]"
+            :border="false"
+            class="auth-input"
           />
-        </van-cell-group>
-      </van-form>
-      <div style="height: 20px;"></div>
-    </div>
-
-    <!-- 底部固定提交按钮 (Static in Flex) -->
-    <div class="submit-bar-static">
-      <van-button round block type="primary" native-type="submit" :loading="loading" @click="onSubmit">
-        提交预约
-      </van-button>
-    </div>
+          <van-field
+            v-model="code"
+            center
+            clearable
+            label="验证码"
+            placeholder="请输入验证码"
+            :border="false"
+            class="auth-input"
+          >
+            <template #button>
+              <van-button size="small" type="primary" plain round>发送验证码</van-button>
+            </template>
+          </van-field>
+          <van-button type="primary" block round class="login-btn" @click="handleLogin">
+            登录并预约
+          </van-button>
+        </div>
+        <div class="auth-footer">
+          未注册手机号验证后将自动注册
+        </div>
+      </div>
+    </van-popup>
   </div>
 </template>
 
 <script setup lang="ts">
-/**
- * 预约功能页面
- * Booking Functionality Page
- * 
- * 核心功能 (Core Features):
- * 1. 支持三种预约类型：个人观展、团队参观、档案查阅
- * 2. 动态表单验证 (Vant Form)
- * 3. 严格的移动端布局适配 (App Shell Mode)
- */
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { getVenues, type VenueItem } from '../api/venue';
+import { createAppointment } from '../api/appointment';
 import { showSuccessToast, showFailToast } from 'vant';
-import { createAppointment, type AppointmentData } from '../api/appointment';
 
 const route = useRoute();
 const router = useRouter();
 
-// UI 状态控制
-// UI State Controls
-const loading = ref(false);
-const showCalendar = ref(false);
-const showTimePicker = ref(false);
+const isGroup = computed(() => route.query.type === 'group');
+const isArchive = computed(() => route.query.type === 'archive');
 
-// 日期范围配置（明天起至未来30天）
-// Date Range Configuration (Tomorrow -> +30 days)
-const minDate = new Date();
-minDate.setDate(minDate.getDate() + 1);
-const maxDate = new Date();
-maxDate.setDate(maxDate.getDate() + 30);
-
-// 核心业务逻辑：判断预约类型
-// Core Business Logic: Determine Booking Type
-// type: 'archive' (查档) | 'exhibition' (个人观展) | 'group' (团队观展)
-const bookingType = computed(() => (route.query.type as string) || 'exhibition');
-const isArchiveBooking = computed(() => bookingType.value === 'archive');
-const isGroupBooking = computed(() => bookingType.value === 'group');
-
-// 动态文案
-// Dynamic Text Labels
 const pageTitle = computed(() => {
-  if (isArchiveBooking.value) return '预约查档';
-  if (isGroupBooking.value) return '团队预约';
-  return '个人观展';
+  if (isArchive.value) return '预约查档';
+  if (isGroup.value) return '团队预约';
+  return '个人预约';
+});
+const venues = ref<VenueItem[]>([]);
+const selectedDate = ref('');
+const selectedVenueId = ref<number | null>(null);
+const selectedTime = ref('');
+const visitorCount = ref(isGroup.value ? 6 : 1);
+
+// UI States
+const showAuthModal = ref(false);
+const phone = ref('');
+const code = ref('');
+
+// Generate Date List (Next 7 days)
+const dateList = computed(() => {
+  const list = [];
+  const now = new Date();
+  const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+  
+  for (let i = 1; i <= 7; i++) {
+    const d = new Date(now);
+    d.setDate(now.getDate() + i);
+    const full = `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`;
+    list.push({
+      full,
+      day: d.getDate(),
+      weekday: weekdays[d.getDay()],
+      available: d.getDay() !== 1 // Assuming Monday closed
+    });
+  }
+  return list;
 });
 
-const bookingTypeLabel = computed(() => {
-  if (isArchiveBooking.value) return '档案查阅';
-  if (isGroupBooking.value) return '团队参观';
-  return '个人参观';
-});
-
-const noticeText = computed(() => {
-  if (isArchiveBooking.value) return '查档请携带本人有效身份证件，建议提前规划查档内容。';
-  if (isGroupBooking.value) return '团队预约需提前3天申请，人数限制10-50人。';
-  return '档案馆周二至周日开放，请提前预约入馆。';
-});
-
-// 字段控制
-const showVisitorCount = computed(() => !isArchiveBooking.value); // 查档默认1人
-const maxVisitors = computed(() => isGroupBooking.value ? 50 : 5);
-
-// 表单数据模型
-// 扩展 AppointmentData 接口以包含前端特有的字段（id_card, purpose）
-// 注意：后端实体也需要相应支持这些字段，或者在 api 层处理
-interface ExtendedAppointmentData extends AppointmentData {
-  id_card?: string;
-  purpose?: string;
-}
-
-const formState = reactive<ExtendedAppointmentData>({
-  biz_type: bookingType.value,
-  biz_id: 1, // 默认关联 ID
-  booking_date: '',
-  time_slot: '',
-  contact_name: '',
-  contact_phone: '',
-  visitor_count: 1,
-  id_card: '',
-  purpose: ''
-});
-
-// 时间段选项
-const timeSlotColumns = [
-  { text: '上午 09:00 - 11:30', value: '09:00-11:30' },
-  { text: '下午 14:00 - 17:00', value: '14:00-17:00' },
+const timeSlots = [
+  { label: '09:00 - 10:30', value: '09:00-10:30' },
+  { label: '10:30 - 12:00', value: '10:30-12:00' },
+  { label: '14:00 - 15:30', value: '14:00-15:30' },
+  { label: '15:30 - 17:00', value: '15:30-17:00' }
 ];
 
-// 事件处理
-const onClickLeft = () => history.back();
+const isFormValid = computed(() => {
+  return selectedDate.value && selectedVenueId.value && selectedTime.value;
+});
 
-const onConfirmDate = (value: Date) => {
-  showCalendar.value = false;
-  // 格式化日期 YYYY-MM-DD
-  const dateStr = `${value.getFullYear()}-${(value.getMonth() + 1).toString().padStart(2, '0')}-${value.getDate().toString().padStart(2, '0')}`;
-  formState.booking_date = dateStr;
-};
-
-const onConfirmTime = ({ selectedOptions }: { selectedOptions: any[] }) => {
-  showTimePicker.value = false;
-  formState.time_slot = selectedOptions[0]?.value;
-};
-
-const onSubmit = async () => {
-  loading.value = true;
+const handleLogin = async () => {
+  if (!phone.value || !code.value) {
+    showFailToast('请填写完整信息');
+    return;
+  }
+  
+  // Mock login and submit
   try {
-    // 提交前的数据处理
-    const submitData = {
-      ...formState,
-      // 如果是查档，强制人数为 1
-      visitor_count: isArchiveBooking.value ? 1 : formState.visitor_count,
-      // 确保 biz_type 正确
-      biz_type: bookingType.value
-    };
-
-    console.log('Submitting:', submitData);
-    await createAppointment(submitData);
+    const venue = venues.value.find(v => v.id === selectedVenueId.value);
+    await createAppointment({
+      biz_type: isGroup.value ? 'group' : 'exhibition',
+      biz_id: selectedVenueId.value!,
+      booking_date: selectedDate.value,
+      time_slot: selectedTime.value,
+      visitor_count: visitorCount.value,
+      contact_name: '测试用户',
+      contact_phone: phone.value
+    });
     
-    showSuccessToast('预约提交成功');
-    
-    // 延迟返回
+    showSuccessToast('预约成功');
+    showAuthModal.value = false;
     setTimeout(() => {
-      router.back();
+      router.push('/my-appointments');
     }, 1500);
-  } catch (error) {
-    console.error(error);
-    showFailToast('预约提交失败，请重试');
-  } finally {
-    loading.value = false;
+  } catch (e) {
+    showFailToast('预约失败');
   }
 };
 
-onMounted(() => {
-  // 初始化逻辑
-  if (isGroupBooking.value) {
-    formState.visitor_count = 10;
+onMounted(async () => {
+  try {
+    venues.value = await getVenues();
+    if (dateList.value.length > 0) {
+      selectedDate.value = dateList.value[0].full;
+    }
+  } catch (e) {
+    console.error(e);
   }
 });
 </script>
 
 <style scoped>
-.booking-page {
-  height: 100vh;
+.booking-view {
+  min-height: 100vh;
+  background: #fff;
   display: flex;
   flex-direction: column;
-  background-color: #f7f8fa;
-  overflow: hidden; /* Important: prevent outer scroll */
 }
 
-/* Flex item 1: Static Nav */
-.static-nav {
-  flex-shrink: 0;
-  width: 100%;
+.header {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  background: #fff;
+  border-bottom: 1px solid #f0f0f0;
 }
 
-/* Flex item 2: Scrollable Content */
-.booking-scroll-content {
+.back-btn {
+  font-size: 20px;
+}
+
+.title {
+  flex: 1;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  margin-right: 20px;
+}
+
+.scroll-content {
   flex: 1;
   overflow-y: auto;
-  padding-bottom: 20px;
-  -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+  padding: 15px;
 }
 
-/* Flex item 3: Static Footer */
-.submit-bar-static {
-  flex-shrink: 0;
-  width: 100%;
-  padding: 12px 16px;
-  padding-bottom: calc(12px + env(safe-area-inset-bottom));
-  background-color: #fff;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
-  z-index: 99;
-}
-
-/* 统一导航栏样式 */
-:deep(.van-nav-bar) {
-  background-color: var(--bg-beige); /* 使用全局米色背景 */
-}
-
-:deep(.van-nav-bar__title) {
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 20px 0 12px 0;
   color: #333;
-  font-weight: bold;
 }
 
-:deep(.van-nav-bar__text), :deep(.van-nav-bar__arrow) {
-  color: var(--primary-gold); /* 使用全局金色 */
+.date-strip {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  padding-bottom: 5px;
+}
+
+.date-item {
+  flex-shrink: 0;
+  width: 50px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: #f5f5f5;
+  color: #666;
+  border: 1px solid transparent;
+}
+
+.date-item.active {
+  background: #e3f2fd;
+  color: #1976d2;
+  border-color: #1976d2;
+}
+
+.date-item.disabled {
+  opacity: 0.3;
+}
+
+.date-item .weekday {
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.date-item .day {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.venue-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.venue-card {
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+.venue-card.active {
+  border-color: #1976d2;
+  background: #f8fbff;
+}
+
+.venue-image {
+  height: 100px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.active-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(25, 118, 210, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 24px;
+}
+
+.venue-name {
+  padding: 8px 10px 2px 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.venue-status {
+  padding: 0 10px;
+  font-size: 12px;
+  color: #999;
+}
+
+.time-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.time-item {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #666;
+  border: 1px solid transparent;
+}
+
+.time-item.active {
+  background: #e3f2fd;
+  color: #1976d2;
+  border-color: #1976d2;
+}
+
+.visitor-count-box {
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 5px 0;
+}
+
+.footer-action {
+  height: 80px;
+  background: #fff;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.summary {
+  flex: 1;
+}
+
+.summary .date-time {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.summary .count {
+  font-size: 12px;
+  color: #999;
+}
+
+.confirm-btn {
+  width: 140px;
+  height: 44px;
+}
+
+.auth-popup {
+  padding: 30px 20px;
+}
+
+.auth-header {
+  margin-bottom: 30px;
+}
+
+.auth-header h3 {
+  font-size: 20px;
+  margin: 0 0 8px 0;
+}
+
+.auth-header p {
+  font-size: 14px;
+  color: #999;
+  margin: 0;
+}
+
+.auth-input {
+  background: #f5f5f5;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  padding: 10px 15px;
+}
+
+.login-btn {
+  margin-top: 20px;
+  height: 48px;
+}
+
+.auth-footer {
+  text-align: center;
+  font-size: 12px;
+  color: #ccc;
+  margin-top: 20px;
 }
 </style>

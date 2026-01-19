@@ -102,11 +102,12 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { type ArchiveItem } from '../api/archive';
 import { showToast } from 'vant';
 
 const route = useRoute();
+const router = useRouter();
 const archive = ref<ArchiveItem | null>(null);
 const isFavorite = ref(false);
 
@@ -137,7 +138,10 @@ const toggleFavorite = () => {
 };
 
 const handleApply = () => {
-  showToast('申请已提交，请在“我的”页面查看进度');
+  router.push({
+    path: '/booking',
+    query: { type: 'archive', biz_id: archive.value?.id }
+  });
 };
 </script>
 

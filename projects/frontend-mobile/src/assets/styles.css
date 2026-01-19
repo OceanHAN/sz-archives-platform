@@ -2206,17 +2206,17 @@ body {
 }
 
 .booking-course-card.card-1 {
-    background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('https://images.unsplash.com/photo-1533073526757-2c8ca1df9f1c?q=80&w=600'); /* Red abstract */
+    background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=red%20abstract%20history%20archives%20museum&image_size=landscape_4_3'); /* Red abstract */
     background-color: #A83226;
 }
 
 .booking-course-card.card-2 {
-    background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('https://images.unsplash.com/photo-1628126235206-526053784c7d?q=80&w=600'); /* Old paper/history */
+    background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=old%20paper%20history%20archives%20vintage%20documents&image_size=landscape_4_3'); /* Old paper/history */
     background-color: #8D7B65;
 }
 
 .booking-course-card.card-3 {
-    background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('https://images.unsplash.com/photo-1590076215667-875d4ef2d743?q=80&w=600'); /* Meeting hall */
+    background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=modern%20meeting%20hall%20conference%20room%20architecture&image_size=landscape_4_3'); /* Meeting hall */
     background-color: #5D4037;
 }
 

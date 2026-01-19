@@ -11,11 +11,12 @@ export class ExhibitionService {
   ) {}
 
   async findAll(): Promise<Exhibition[]> {
-    // If empty, seed some data for demo
+    // Only seed if empty to avoid constant updates/aborted requests
     const count = await this.exhibitionRepository.count();
     if (count === 0) {
       await this.seedData();
     }
+    
     return this.exhibitionRepository.find({
       order: { sort_order: 'DESC' },
     });
@@ -47,7 +48,7 @@ export class ExhibitionService {
     const exhibitions = [
       {
         title: '大道同行 海纳百川',
-        cover_image: 'https://images.unsplash.com/photo-1599940824399-b87987ced72a?q=80&w=800',
+        cover_image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=silk_road_exhibition&image_size=landscape_4_3',
         summary: '从“丝绸之路”的历史回响到“一带一路”的深圳实践',
         content: '展览详情内容...',
         type: 'virtual',
@@ -56,7 +57,7 @@ export class ExhibitionService {
       },
       {
         title: '深圳记忆：城市发展史',
-        cover_image: 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?q=80&w=800',
+        cover_image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=shenzhen_history_museum&image_size=landscape_4_3',
         summary: '记录深圳从小渔村到国际化大都市的变迁',
         type: 'virtual',
         status: true,
@@ -64,7 +65,7 @@ export class ExhibitionService {
       },
       {
         title: '红色档案见证百年',
-        cover_image: 'https://images.unsplash.com/photo-1533073526757-2c8ca1df9f1c?q=80&w=800',
+        cover_image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=red_archives_exhibition&image_size=landscape_4_3',
         summary: '庆祝中国共产党成立100周年特展',
         type: 'physical',
         status: true,
@@ -73,7 +74,14 @@ export class ExhibitionService {
     ];
 
     for (const item of exhibitions) {
-      await this.exhibitionRepository.save(item);
+      // Use findOne to check if it exists by title to avoid duplicates but allow updates if needed
+      // Or just clear and re-insert for seed
+      const existing = await this.exhibitionRepository.findOneBy({ title: item.title });
+      if (existing) {
+        await this.exhibitionRepository.update(existing.id, item);
+      } else {
+        await this.exhibitionRepository.save(item);
+      }
     }
   }
 }

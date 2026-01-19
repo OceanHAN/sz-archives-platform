@@ -16,11 +16,27 @@
         </a-menu-item>
         <a-menu-item key="exhibitions" @click="$router.push('/exhibitions')">
           <template #icon><picture-outlined /></template>
-          <span>展览管理</span>
+          <span>云展厅管理</span>
+        </a-menu-item>
+        <a-menu-item key="venues" @click="$router.push('/venues')">
+          <template #icon><shop-outlined /></template>
+          <span>线下展馆管理</span>
         </a-menu-item>
         <a-menu-item key="appointments" @click="$router.push('/appointments')">
           <template #icon><calendar-outlined /></template>
           <span>预约管理</span>
+        </a-menu-item>
+        <a-menu-item key="courses" @click="$router.push('/courses')">
+          <template #icon><video-camera-outlined /></template>
+          <span>云课堂管理</span>
+        </a-menu-item>
+        <a-menu-item key="news" @click="$router.push('/news')">
+          <template #icon><read-outlined /></template>
+          <span>资讯管理</span>
+        </a-menu-item>
+        <a-menu-item key="landmarks" @click="$router.push('/landmarks')">
+          <template #icon><compass-outlined /></template>
+          <span>地图地标管理</span>
         </a-menu-item>
       </a-menu>
     </a-layout-sider>
@@ -63,7 +79,11 @@ import {
   DashboardOutlined,
   FileSearchOutlined,
   PictureOutlined,
+  ShopOutlined,
   CalendarOutlined,
+  VideoCameraOutlined,
+  ReadOutlined,
+  CompassOutlined,
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   DownOutlined
@@ -77,7 +97,11 @@ watch(() => route.path, (path) => {
   if (path === '/') selectedKeys.value = ['dashboard'];
   else if (path.startsWith('/archives')) selectedKeys.value = ['archives'];
   else if (path.startsWith('/exhibitions')) selectedKeys.value = ['exhibitions'];
+  else if (path.startsWith('/venues')) selectedKeys.value = ['venues'];
   else if (path.startsWith('/appointments')) selectedKeys.value = ['appointments'];
+  else if (path.startsWith('/courses')) selectedKeys.value = ['courses'];
+  else if (path.startsWith('/news')) selectedKeys.value = ['news'];
+  else if (path.startsWith('/landmarks')) selectedKeys.value = ['landmarks'];
 }, { immediate: true });
 </script>
 

@@ -4,7 +4,7 @@
       title="展览详情"
       left-text="返回"
       left-arrow
-      @click-left="$router.back()"
+      @click-left="onClickLeft"
       :border="false"
       class="static-header"
     />
@@ -60,6 +60,14 @@ const route = useRoute();
 const router = useRouter();
 const exhibitionId = route.params.id;
 const exhibition = ref<ExhibitionItem | null>(null);
+
+const onClickLeft = () => {
+  if (window.history.length > 1) {
+    router.back();
+  } else {
+    router.push('/');
+  }
+};
 
 const fetchDetail = async () => {
     try {

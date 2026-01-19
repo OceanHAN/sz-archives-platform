@@ -4,7 +4,7 @@
       title="预约课程"
       left-text="返回"
       left-arrow
-      @click-left="$router.back()"
+      @click-left="onClickLeft"
       :border="false"
       class="static-header"
     />
@@ -89,6 +89,14 @@ import { createAppointment } from '../api/appointment';
 const active = ref(0);
 const router = useRouter();
 
+const onClickLeft = () => {
+  if (window.history.length > 1) {
+    router.back();
+  } else {
+    router.push('/');
+  }
+};
+
 // Mock Data
 const recentCourses = ref([
   {
@@ -96,7 +104,7 @@ const recentCourses = ref([
     title: '深圳档案里的红色记忆',
     speaker: '张教授',
     time: '2023-10-15 14:30',
-    cover: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600',
+    cover: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=red_history_archive&image_size=landscape_4_3',
     statusText: '报名中',
     statusClass: 'status-booking',
     btnText: '立即报名',
@@ -107,7 +115,7 @@ const recentCourses = ref([
     title: '城市发展与档案保护',
     speaker: '李研究员',
     time: '2023-10-20 09:30',
-    cover: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=600',
+    cover: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=city_development_archive&image_size=landscape_4_3',
     statusText: '已满员',
     statusClass: 'status-full',
     btnText: '名额已满',
@@ -121,14 +129,14 @@ const historyCourses = ref([
     title: '改革开放口述史',
     speaker: '王老师',
     views: '2,304',
-    cover: 'https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?q=80&w=600'
+    cover: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=reform_opening_up_history&image_size=landscape_4_3'
   },
   {
     id: 4,
     title: '非遗文化传承',
     speaker: '陈大师',
     views: '1,502',
-    cover: 'https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?q=80&w=600'
+    cover: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=cultural_heritage_archive&image_size=landscape_4_3'
   }
 ]);
 

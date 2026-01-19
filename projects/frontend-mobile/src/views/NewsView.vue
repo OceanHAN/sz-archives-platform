@@ -4,7 +4,7 @@
       title="资讯中心"
       left-text="返回"
       left-arrow
-      @click-left="$router.back()"
+      @click-left="onClickLeft"
       :border="false"
       class="static-header"
     />
@@ -13,27 +13,27 @@
       <van-tabs v-model:active="active" sticky>
         <van-tab title="最新">
           <div class="news-list">
-             <div class="news-item" v-for="item in latestNews" :key="item.id">
+             <div class="news-item" v-for="item in latestNews" :key="item.id" @click="goToDetail(item.id)">
                 <div class="news-text">
                    <h3 class="news-title">{{ item.title }}</h3>
                    <div class="news-meta">
-                      <span class="news-date">{{ item.date }}</span>
-                      <span class="news-tag" v-if="item.isTop">置顶</span>
+                      <span class="news-date">{{ formatDate(item.publish_time) }}</span>
+                      <!-- <span class="news-tag" v-if="item.isTop">置顶</span> -->
                    </div>
                 </div>
-                <div class="news-thumb" v-if="item.image">
-                   <img :src="item.image" />
+                <div class="news-thumb" v-if="item.cover_image">
+                   <img :src="item.cover_image" />
                 </div>
              </div>
           </div>
         </van-tab>
         <van-tab title="公告">
             <div class="news-list">
-             <div class="news-item" v-for="item in noticeNews" :key="item.id">
+             <div class="news-item" v-for="item in noticeNews" :key="item.id" @click="goToDetail(item.id)">
                 <div class="news-text full-width">
                    <h3 class="news-title">{{ item.title }}</h3>
                    <div class="news-meta">
-                      <span class="news-date">{{ item.date }}</span>
+                      <span class="news-date">{{ formatDate(item.publish_time) }}</span>
                    </div>
                 </div>
              </div>
@@ -45,51 +45,46 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { getNews, type NewsItem } from '../api/news';
+import dayjs from 'dayjs';
 
-/**
- * 资讯中心页面
- * News View
- */
+const router = useRouter();
 const active = ref(0);
+const latestNews = ref<NewsItem[]>([]);
+const noticeNews = ref<NewsItem[]>([]);
 
-// Mock Data
-const latestNews = ref([
-    {
-        id: 1,
-        title: '深圳市档案馆开展“6·9国际档案日”系列宣传活动',
-        date: '2023-06-09',
-        isTop: true,
-        image: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=200'
-    },
-    {
-        id: 2,
-        title: '关于恢复对外开放的公告',
-        date: '2023-05-15',
-        isTop: false,
-        image: null
-    },
-    {
-        id: 3,
-        title: '“兰台讲堂”第五期顺利开讲，专家解读城市记忆',
-        date: '2023-05-10',
-        isTop: false,
-        image: 'https://images.unsplash.com/photo-1544531586-fde5298cdd40?q=80&w=200'
-    }
-]);
+const fetchNews = async () => {
+  try {
+    const data = await getNews();
+    latestNews.value = data;
+    // For demo, we just duplicate for notice tab or filter if backend has type
+    noticeNews.value = data.filter((_, i) => i % 2 !== 0);
+  } catch (e) {
+    console.error(e);
+  }
+};
 
-const noticeNews = ref([
-    {
-        id: 4,
-        title: '深圳市档案馆2023年节假日开放时间安排',
-        date: '2023-01-01'
-    },
-    {
-        id: 5,
-        title: '关于查档系统维护升级的通知',
-        date: '2023-03-20'
-    }
-]);
+const goToDetail = (id: number) => {
+  router.push(`/news-detail/${id}`);
+};
+
+const formatDate = (dateStr: string) => {
+  return dayjs(dateStr).format('YYYY-MM-DD');
+};
+
+const onClickLeft = () => {
+  if (window.history.length > 1) {
+    router.back();
+  } else {
+    router.push('/');
+  }
+};
+
+onMounted(() => {
+  fetchNews();
+});
 </script>
 
 <style scoped>

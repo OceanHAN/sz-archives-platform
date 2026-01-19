@@ -34,6 +34,12 @@ export class Appointment {
   @Column({ length: 20 })
   contact_phone: string;
 
+  @Column({ length: 20, nullable: true })
+  id_card: string;
+
+  @Column({ length: 255, nullable: true })
+  purpose: string;
+
   @Column({ default: 0 })
   status: number; // 0-pending, 1-completed, 2-cancelled, 3-expired
 

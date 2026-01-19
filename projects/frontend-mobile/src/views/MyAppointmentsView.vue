@@ -4,7 +4,7 @@
       title="我的预约"
       left-text="返回"
       left-arrow
-      @click-left="$router.back()"
+      @click-left="onClickLeft"
       class="static-header"
     />
 
@@ -62,10 +62,21 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import api from '../api';
 import { showConfirmDialog, showToast } from 'vant';
 
+const router = useRouter();
 const appointments = ref<any[]>([]);
+
+const onClickLeft = () => {
+  if (window.history.length > 1) {
+    router.back();
+  } else {
+    router.push('/');
+  }
+};
+
 const loading = ref(false);
 const finished = ref(false);
 const refreshing = ref(false);

@@ -23,7 +23,7 @@
               <i class="fas fa-id-card"></i>
             </div>
           </div>
-          <div class="card card-teal" @click="$router.push('/booking?type=exhibition')">
+          <div class="card card-teal" @click="$router.push('/booking-landing')">
             <div class="card-text">
               <h3>预约展览</h3>
               <p>Exhibition<br>Booking</p>
@@ -120,12 +120,26 @@
             <a class="more-link" @click="$router.push('/course-list')">更多 <i class="fas fa-chevron-right"></i></a>
           </div>
 
-          <div class="course-card" @click="$router.push('/course-booking')">
-            <div class="course-bg">
-              <div class="play-btn"><i class="fas fa-play"></i></div>
-              <h3 class="calligraphy-gold">深圳抗战</h3>
-              <h3 class="calligraphy-gold sub">血与火的记忆</h3>
-              <div class="bottom-tag">跟着档案学党史</div>
+          <div v-if="courses && courses.length > 0" class="horizontal-scroll">
+             <div 
+               v-for="course in courses"
+               :key="course.id"
+               class="exhibition-card" 
+               @click="$router.push(`/course-player/${course.id}`)"
+             >
+              <div class="card-bg" :style="{ backgroundImage: `url(${course.cover_image})` }">
+                <div class="play-btn"><i class="fas fa-play"></i></div>
+                <div class="card-content">
+                  <h3 class="calligraphy">{{ course.title }}</h3>
+                  <p class="desc">{{ course.subtitle }}</p>
+                  <span class="tag">视频</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div v-else class="exhibition-card">
+            <div class="card-bg" style="background: #eee; display: flex; align-items: center; justify-content: center; color: #999;">
+               暂无课程
             </div>
           </div>
         </section>
@@ -157,10 +171,12 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { getExhibitions, type ExhibitionItem } from '../api/exhibition';
+import { getCourses, type CourseItem } from '../api/course';
 
 const router = useRouter();
 
 const exhibitions = ref<ExhibitionItem[]>([]);
+const courses = ref<CourseItem[]>([]);
 
 const fetchExhibitions = async () => {
   try {
@@ -170,8 +186,17 @@ const fetchExhibitions = async () => {
   }
 };
 
+const fetchCourses = async () => {
+  try {
+    courses.value = await getCourses();
+  } catch (e) {
+    console.error('Failed to fetch courses', e);
+  }
+};
+
 onMounted(() => {
   fetchExhibitions();
+  fetchCourses();
 });
 
 const navigateToMap = () => {
@@ -208,5 +233,24 @@ const navigateToMap = () => {
   z-index: 100;
   background: white;
   border-top: 1px solid #eee;
+}
+
+.card-bg .play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(4px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  z-index: 2;
 }
 </style>
