@@ -29,7 +29,7 @@
 
     <!-- Modal for Add/Edit -->
     <a-modal
-      v-model:visible="modalVisible"
+      v-model:open="modalVisible"
       :title="editingId ? '编辑课程' : '发布新课程'"
       @ok="handleModalOk"
     >
@@ -74,7 +74,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue';
-import { PlusOutlined, UploadOutlined, LoadingOutlined } from '@ant-design/icons-vue';
+import { PlusOutlined, LoadingOutlined } from '@ant-design/icons-vue';
 import api from '../api';
 import { message } from 'ant-design-vue';
 import dayjs from 'dayjs';

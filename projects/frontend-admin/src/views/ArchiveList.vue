@@ -41,7 +41,7 @@
 
     <!-- Modal for Add/Edit -->
     <a-modal
-      v-model:visible="modalVisible"
+      v-model:open="modalVisible"
       :title="editingId ? '编辑档案' : '新增档案'"
       @ok="handleModalOk"
     >
@@ -118,7 +118,7 @@ const editRecord = (record: any) => {
   modalVisible.value = true;
 };
 
-const deleteRecord = async (id: number) => {
+const deleteRecord = async (_id: number) => {
   // In a real app, call delete API
   message.success('模拟删除成功');
   fetchArchives();

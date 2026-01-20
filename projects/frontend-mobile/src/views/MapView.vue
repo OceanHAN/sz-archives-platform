@@ -2,6 +2,7 @@
   <div class="mobile-container map-view-page">
     <!-- Map Area -->
     <div class="map-wrapper">
+      <!-- 地图容器：Leaflet 将在此 div 中渲染交互式地图 -->
       <div id="map" class="leaflet-map-target"></div>
     </div>
 
@@ -90,20 +91,29 @@ import 'leaflet/dist/leaflet.css';
 import { getLandmarks, getLandmarkDetail, type LandmarkItem } from '../api/landmark';
 import { getHistoricalMaps, type HistoricalMapItem } from '../api/historical-map';
 
+// Leaflet 地图实例
 const map = ref<L.Map | null>(null);
+// 地标数据列表
 const landmarks = ref<LandmarkItem[]>([]);
+// 当前选中的地标，用于底部抽屉显示详情
 const selectedLandmark = ref<LandmarkItem | null>(null);
+// 是否展示底部抽屉
 const showDrawer = ref(false);
 
 // Historical Map State
+// 历史地图数据列表（不同年份的底图）
 const historicalMaps = ref<HistoricalMapItem[]>([]);
+// 是否展示年份选择器
 const showYearSelector = ref(false);
+// 当前激活的历史地图项
 const activeMap = ref<HistoricalMapItem | null>(null);
+// 当前叠加的历史底图覆盖层
 const currentOverlay = ref<L.ImageOverlay | null>(null);
-const overlayOpacity = ref(0.7);
 
+// 深圳市中心坐标
 const SZ_CENTER: L.LatLngExpression = [22.5431, 114.0579];
 
+// 年份选择器动作列表（含“当前地图”）
 const yearActions = computed(() => {
   const actions = historicalMaps.value.map(m => ({
     name: `${m.year}年 - ${m.title}`,
@@ -121,6 +131,7 @@ const yearActions = computed(() => {
   return actions;
 });
 
+// 瓦片图层（CartoDB Voyager）
 const tileLayer = ref<L.TileLayer | null>(null);
 
 onMounted(async () => {
@@ -130,6 +141,7 @@ onMounted(async () => {
   loadHistoricalMaps();
 });
 
+// 初始化 Leaflet 地图与默认瓦片图层
 const initMap = () => {
   if (map.value) return;
 
@@ -145,9 +157,10 @@ const initMap = () => {
     maxZoom: 20,
     minZoom: 3,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-  }).addTo(map.value);
+  }).addTo(map.value as unknown as L.Map);
 };
 
+// 加载地标列表并渲染标记点
 const loadLandmarks = async () => {
   try {
     const data = await getLandmarks();
@@ -158,6 +171,7 @@ const loadLandmarks = async () => {
   }
 };
 
+// 加载历史地图列表（用于年份选择）
 const loadHistoricalMaps = async () => {
   try {
     historicalMaps.value = await getHistoricalMaps();
@@ -166,16 +180,17 @@ const loadHistoricalMaps = async () => {
   }
 };
 
+// 年份选择回调：0 表示回到当前现代地图，否则叠加对应历史底图
 const handleYearSelect = (action: any) => {
   const mapId = action.value;
   if (mapId === 0) {
     // Show current map
     if (currentOverlay.value && map.value) {
-      map.value.removeLayer(currentOverlay.value);
+      (map.value as unknown as L.Map).removeLayer(currentOverlay.value as unknown as L.Layer);
     }
     if (tileLayer.value && map.value) {
-      if (!map.value.hasLayer(tileLayer.value)) {
-        tileLayer.value.addTo(map.value);
+      if (!(map.value as unknown as L.Map).hasLayer(tileLayer.value as unknown as L.Layer)) {
+        tileLayer.value.addTo(map.value as unknown as L.Map);
       }
     }
     currentOverlay.value = null;
@@ -189,17 +204,18 @@ const handleYearSelect = (action: any) => {
   }
 };
 
+// 渲染历史底图覆盖层，并适配显示范围
 const renderOverlay = (historyMap: HistoricalMapItem) => {
   if (!map.value) return;
 
   // Remove existing overlay
   if (currentOverlay.value) {
-    map.value.removeLayer(currentOverlay.value);
+    (map.value as unknown as L.Map).removeLayer(currentOverlay.value as unknown as L.Layer);
   }
   
   // Remove tile layer (switch mode)
-  if (tileLayer.value && map.value.hasLayer(tileLayer.value)) {
-    map.value.removeLayer(tileLayer.value);
+  if (tileLayer.value && (map.value as unknown as L.Map).hasLayer(tileLayer.value as unknown as L.Layer)) {
+    (map.value as unknown as L.Map).removeLayer(tileLayer.value as unknown as L.Layer);
   }
 
   // Define bounds
@@ -212,7 +228,7 @@ const renderOverlay = (historyMap: HistoricalMapItem) => {
   currentOverlay.value = L.imageOverlay(historyMap.url, bounds, {
     opacity: 1,
     interactive: true
-  }).addTo(map.value);
+  }).addTo(map.value as unknown as L.Map);
 
   // Fit bounds to show the overlay
   map.value.fitBounds(bounds);
@@ -223,11 +239,13 @@ const renderOverlay = (historyMap: HistoricalMapItem) => {
 // Removed updateOpacity as it is no longer used in switch mode
 
 
+// 分类对应的标记颜色
 const getCategoryColor = (cat: string) => {
   const map: any = { red: '#ff4d4f', history: '#faad14', culture: '#1890ff', hotspot: '#52c41a' };
   return map[cat] || '#1890ff';
 };
 
+// 在地图上渲染地标标记点，并绑定点击事件
 const renderMarkers = () => {
   if (!map.value) return;
 
@@ -244,11 +262,12 @@ const renderMarkers = () => {
       iconAnchor: [16, 32]
     });
 
-    const marker = L.marker([item.latitude, item.longitude], { icon }).addTo(map.value!);
+    const marker = L.marker([item.latitude, item.longitude], { icon }).addTo(map.value as unknown as L.Map);
     marker.on('click', () => handleMarkerClick(item.id));
   });
 };
 
+// 标记点击：加载详情、打开抽屉、镜头居中
 const handleMarkerClick = async (id: number) => {
   try {
     const detail = await getLandmarkDetail(id);
@@ -262,6 +281,7 @@ const handleMarkerClick = async (id: number) => {
   }
 };
 
+// 组件卸载：销毁地图实例，释放资源
 onUnmounted(() => {
   if (map.value) {
     map.value.remove();

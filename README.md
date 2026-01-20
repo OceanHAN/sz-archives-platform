@@ -85,6 +85,13 @@ The mobile app will be accessible at the URL provided by Vite.
 - **Appointments**: Booking system for exhibitions, courses, and archive visits.
 - **Admin Panel**: Content management system (CMS) for all the above.
 
+### 📝 Recent Updates
+
+- 2026-01-20
+  - Added comprehensive Chinese comments across mobile API modules
+  - Annotated backend controllers and services for maintainability
+  - Updated README with latest development notes
+
 ---
 
 <a name="chinese"></a>
@@ -169,6 +176,13 @@ npm run dev
 - **档案**: 档案检索和电子件阅览。
 - **预约**: 展览、课程和查档的预约系统。
 - **管理后台**: 用于管理上述所有内容的内容管理系统 (CMS)。
+
+### 📝 最近更新
+
+- 2026-01-20
+  - 为移动端 API 模块补充中文注释，说明字段与接口用途
+  - 为后端控制器与服务补充中文注释，提升可维护性
+  - 更新 README，补充最新开发说明
 
 ### 📖 文档
 

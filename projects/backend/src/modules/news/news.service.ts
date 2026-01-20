@@ -3,6 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { News } from '../../entities/news.entity';
 
+/**
+ * 资讯服务
+ * 负责资讯的增删改查与种子数据初始化
+ */
 @Injectable()
 export class NewsService {
   constructor(
@@ -10,11 +14,13 @@ export class NewsService {
     private newsRepository: Repository<News>,
   ) {}
 
+  /** 创建资讯 */
   async create(data: Partial<News>): Promise<News> {
     const news = this.newsRepository.create(data);
     return this.newsRepository.save(news);
   }
 
+  /** 获取资讯列表（无数据时进行种子初始化） */
   async findAll(): Promise<News[]> {
     const count = await this.newsRepository.count();
     if (count === 0) {
@@ -25,6 +31,7 @@ export class NewsService {
     });
   }
 
+  /** 获取资讯详情 */
   async findOne(id: number): Promise<News> {
     const news = await this.newsRepository.findOneBy({ id });
     if (!news) {
@@ -33,15 +40,18 @@ export class NewsService {
     return news;
   }
 
+  /** 更新资讯 */
   async update(id: number, data: Partial<News>): Promise<News> {
     await this.newsRepository.update(id, data);
     return this.findOne(id);
   }
 
+  /** 删除资讯 */
   async remove(id: number): Promise<void> {
     await this.newsRepository.delete(id);
   }
 
+  /** 初始化资讯种子数据 */
   private async seedData() {
     const newsList = [
       {

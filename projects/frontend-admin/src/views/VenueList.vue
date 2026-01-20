@@ -31,7 +31,7 @@
 
     <!-- Modal for Add/Edit -->
     <a-modal
-      v-model:visible="modalVisible"
+      v-model:open="modalVisible"
       :title="editingId ? '编辑展馆' : '添加线下展馆'"
       @ok="handleModalOk"
     >

@@ -184,8 +184,8 @@ const stats = reactive({
   exhibitions: 0
 });
 
-const recentLandmarks = ref([]);
-const recentNews = ref([]);
+const recentLandmarks = ref<any[]>([]);
+const recentNews = ref<any[]>([]);
 
 const landmarkColumns = [
   { title: '名称', dataIndex: 'name', key: 'name' },
@@ -218,13 +218,13 @@ const fetchData = async () => {
       api.get('/landmarks'),
       api.get('/news'),
       api.get('/exhibitions'),
-      api.get('/archives').catch(() => []) // Handle archives error gracefully if endpoint missing
+      api.get('/archives/search?q=').catch(() => []) // Adjust to existing search endpoint to avoid 404
     ]);
 
-    const landmarks = (landmarksRes as any[]) || [];
-    const news = (newsRes as any[]) || [];
-    const exhibitions = (exhibitionsRes as any[]) || [];
-    const archives = (archivesRes as any[]) || [];
+    const landmarks = (landmarksRes as unknown as any[]) || [];
+    const news = (newsRes as unknown as any[]) || [];
+    const exhibitions = (exhibitionsRes as unknown as any[]) || [];
+    const archives = (archivesRes as unknown as any[]) || [];
 
     stats.landmarks = landmarks.length;
     stats.news = news.length;

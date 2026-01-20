@@ -4,6 +4,10 @@ import { Repository } from 'typeorm';
 import { Landmark } from '../../entities/landmark.entity';
 import { LandmarkEvent } from '../../entities/landmark-event.entity';
 
+/**
+ * 地标服务
+ * 负责地标及其事件的业务处理与数据读写
+ */
 @Injectable()
 export class LandmarkService {
   constructor(
@@ -13,6 +17,10 @@ export class LandmarkService {
     private eventRepository: Repository<LandmarkEvent>,
   ) {}
 
+  /**
+   * 创建地标（附带事件）
+   * 说明：事件通过单独表保存，此处会在保存地标后批量写入事件
+   */
   async create(data: Partial<Landmark>): Promise<Landmark> {
     const events = data.events;
     delete data.events;
@@ -33,6 +41,10 @@ export class LandmarkService {
     return this.findOne(savedLandmark.id);
   }
 
+  /**
+   * 获取地标列表
+   * 若当前无数据，将触发初始化种子数据
+   */
   async findAll(): Promise<Landmark[]> {
     const count = await this.landmarkRepository.count();
     if (count === 0) {
@@ -43,6 +55,10 @@ export class LandmarkService {
     });
   }
 
+  /**
+   * 获取地标详情（包含事件）
+   * 并对事件按年份升序排列
+   */
   async findOne(id: number): Promise<Landmark> {
     const landmark = await this.landmarkRepository.findOne({
       where: { id },
@@ -61,6 +77,10 @@ export class LandmarkService {
     return landmark;
   }
 
+  /**
+   * 更新地标与事件
+   * 简化策略：删除旧事件后按最新列表重建
+   */
   async update(id: number, data: Partial<Landmark>): Promise<Landmark> {
     const events = data.events;
     delete data.events;
@@ -83,10 +103,16 @@ export class LandmarkService {
     return this.findOne(id);
   }
 
+  /**
+   * 删除地标
+   */
   async remove(id: number): Promise<void> {
     await this.landmarkRepository.delete(id);
   }
 
+  /**
+   * 初始化种子数据（示例地标与事件）
+   */
   private async seedData() {
     const landmarks = [
       {

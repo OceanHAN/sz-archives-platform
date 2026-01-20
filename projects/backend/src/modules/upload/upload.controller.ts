@@ -3,8 +3,18 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 
+/**
+ * 文件上传控制器
+ * 路由前缀：/upload
+ * 仅允许图片类型上传，返回可访问的 URL
+ */
 @Controller('upload')
 export class UploadController {
+  /**
+   * 上传图片
+   * - 存储目录：./uploads
+   * - 文件名：随机 32 位 + 原始扩展名
+   */
   @Post()
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
